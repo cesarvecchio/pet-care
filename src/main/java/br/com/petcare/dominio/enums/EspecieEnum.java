@@ -1,4 +1,4 @@
-package br.com.petcare.infra.enums;
+package br.com.petcare.dominio.enums;
 
 import lombok.Getter;
 

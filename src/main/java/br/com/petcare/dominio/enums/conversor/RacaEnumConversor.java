@@ -1,6 +1,6 @@
-package br.com.petcare.infra.enums.conversor;
+package br.com.petcare.dominio.enums.conversor;
 
-import br.com.petcare.infra.enums.RacaEnum;
+import br.com.petcare.dominio.enums.RacaEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

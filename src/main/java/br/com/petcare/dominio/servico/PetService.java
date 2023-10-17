@@ -2,8 +2,8 @@ package br.com.petcare.dominio.servico;
 
 import br.com.petcare.dominio.dto.PetDTO;
 import br.com.petcare.dominio.entidade.Pet;
-import br.com.petcare.infra.enums.EspecieEnum;
-import br.com.petcare.infra.enums.RacaEnum;
+import br.com.petcare.dominio.enums.EspecieEnum;
+import br.com.petcare.dominio.enums.RacaEnum;
 import br.com.petcare.infra.repositorio.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

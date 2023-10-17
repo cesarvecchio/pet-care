@@ -1,9 +1,9 @@
 package br.com.petcare.dominio.entidade;
 
-import br.com.petcare.infra.enums.EspecieEnum;
-import br.com.petcare.infra.enums.RacaEnum;
-import br.com.petcare.infra.enums.conversor.EspecieEnumConversor;
-import br.com.petcare.infra.enums.conversor.RacaEnumConversor;
+import br.com.petcare.dominio.enums.EspecieEnum;
+import br.com.petcare.dominio.enums.RacaEnum;
+import br.com.petcare.dominio.enums.conversor.EspecieEnumConversor;
+import br.com.petcare.dominio.enums.conversor.RacaEnumConversor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
