@@ -31,5 +31,11 @@ public enum RacaEnum {
         this.descricao = descricao;
     }
 
+    public static RacaEnum recuperarRaca(String raca) {
+        for (RacaEnum value : values()) {
+            if(value.getDescricao().equals(raca)) return value;
+        }
+        return null;
+    }
 
 }

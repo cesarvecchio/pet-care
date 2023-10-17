@@ -2,6 +2,8 @@ package br.com.petcare.dominio.entidade;
 
 import br.com.petcare.infra.enums.EspecieEnum;
 import br.com.petcare.infra.enums.RacaEnum;
+import br.com.petcare.infra.enums.conversor.EspecieEnumConversor;
+import br.com.petcare.infra.enums.conversor.RacaEnumConversor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +21,10 @@ public class Pet {
 
     private String nome;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = EspecieEnumConversor.class)
     private EspecieEnum especie;
 
-    @Enumerated
+    @Convert(converter = RacaEnumConversor.class)
     private RacaEnum raca;
 
     @ManyToOne

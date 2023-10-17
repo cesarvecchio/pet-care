@@ -12,4 +12,11 @@ public enum EspecieEnum {
     EspecieEnum(String descricao) {
         this.descricao = descricao;
     }
+
+    public static EspecieEnum recuperarEspecie(String especie) {
+        for (EspecieEnum value : values()) {
+            if(value.getDescricao().equals(especie)) return value;
+        }
+        return null;
+    }
 }

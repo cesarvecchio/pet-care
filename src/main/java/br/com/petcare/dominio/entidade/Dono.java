@@ -18,19 +18,14 @@ public class Dono {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome")
     private String nome;
 
-    @Column(name = "cpf")
     private String cpf;
 
-    @Column(name = "rg")
     private String rg;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "senha")
     private String senha;
 
     @OneToMany

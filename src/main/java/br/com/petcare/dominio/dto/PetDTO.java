@@ -7,8 +7,8 @@ import br.com.petcare.infra.enums.RacaEnum;
 public record PetDTO(
          Integer id,
          String nome,
-         EspecieEnum especie,
-         RacaEnum raca,
+         String especie,
+         String raca,
          Dono dono
 ) {
 }
