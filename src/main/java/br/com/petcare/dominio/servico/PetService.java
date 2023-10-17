@@ -3,6 +3,8 @@ package br.com.petcare.dominio.servico;
 import br.com.petcare.dominio.dto.PetDTO;
 import br.com.petcare.dominio.entidade.Pet;
 import br.com.petcare.dominio.enums.EspecieEnum;
+import br.com.petcare.dominio.enums.HumorEnum;
+import br.com.petcare.dominio.enums.PorteEnum;
 import br.com.petcare.dominio.enums.RacaEnum;
 import br.com.petcare.infra.repositorio.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,10 @@ public class PetService {
                         ? null : pet.getEspecie().getDescricao() ,
                 ObjectUtils.isEmpty(pet.getRaca())
                         ? null : pet.getRaca().getDescricao(),
+                ObjectUtils.isEmpty(pet.getPorte())
+                        ? null : pet.getPorte().getDescricao(),
+                ObjectUtils.isEmpty(pet.getHumor())
+                        ? null : pet.getHumor().getDescricao(),
                 pet.getDono()
         );
     }
@@ -45,6 +51,10 @@ public class PetService {
                         ? null : EspecieEnum.recuperarEspecie(petDTO.especie()))
                 .raca(ObjectUtils.isEmpty(petDTO.raca())
                         ? null : RacaEnum.recuperarRaca(petDTO.raca()))
+                .porte(ObjectUtils.isEmpty(petDTO.raca())
+                        ? null : PorteEnum.recuperarPorte(petDTO.porte()))
+                .humor(ObjectUtils.isEmpty(petDTO.humor())
+                        ? null : HumorEnum.recuperarHumor(petDTO.humor()))
                 .dono(petDTO.dono())
                 .build();
     }
