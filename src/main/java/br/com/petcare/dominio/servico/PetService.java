@@ -4,7 +4,6 @@ import br.com.petcare.dominio.dto.PetDTO;
 import br.com.petcare.dominio.entidade.Pet;
 import br.com.petcare.dominio.enums.EspecieEnum;
 import br.com.petcare.dominio.enums.HumorEnum;
-import br.com.petcare.dominio.enums.PorteEnum;
 import br.com.petcare.dominio.enums.RacaEnum;
 import br.com.petcare.infra.repositorio.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,16 @@ public class PetService {
     }
 
     private PetDTO toDTO(Pet pet) {
-        return new PetDTO(pet.getId(),
+        return new PetDTO(
+                pet.getId(),
                 pet.getNome(),
+                pet.getDataNascimento(),
+                pet.getPeso(),
+                pet.getTamanho(),
                 ObjectUtils.isEmpty(pet.getEspecie())
                         ? null : pet.getEspecie().getDescricao() ,
                 ObjectUtils.isEmpty(pet.getRaca())
                         ? null : pet.getRaca().getDescricao(),
-                ObjectUtils.isEmpty(pet.getPorte())
-                        ? null : pet.getPorte().getDescricao(),
                 ObjectUtils.isEmpty(pet.getHumor())
                         ? null : pet.getHumor().getDescricao(),
                 pet.getDono()
@@ -47,12 +48,13 @@ public class PetService {
         return Pet.builder()
                 .id(petDTO.id())
                 .nome(petDTO.nome())
+                .dataNascimento(petDTO.dataNascimento())
+                .peso(petDTO.peso())
+                .tamanho(petDTO.tamanho())
                 .especie(ObjectUtils.isEmpty(petDTO.especie())
                         ? null : EspecieEnum.recuperarEspecie(petDTO.especie()))
                 .raca(ObjectUtils.isEmpty(petDTO.raca())
                         ? null : RacaEnum.recuperarRaca(petDTO.raca()))
-                .porte(ObjectUtils.isEmpty(petDTO.raca())
-                        ? null : PorteEnum.recuperarPorte(petDTO.porte()))
                 .humor(ObjectUtils.isEmpty(petDTO.humor())
                         ? null : HumorEnum.recuperarHumor(petDTO.humor()))
                 .dono(petDTO.dono())
