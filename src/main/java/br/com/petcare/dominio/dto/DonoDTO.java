@@ -6,6 +6,13 @@ public record DonoDTO(
         String cpf,
         String rg,
         String email,
-        String senha
+        String senha,
+        String cep,
+        String logradouro,
+        String complemento,
+        String bairro,
+        String cidade,
+        String uf,
+        Integer numero
 ) {
 }

@@ -36,7 +36,14 @@ public class DonoService {
                 dono.getCpf(),
                 dono.getRg(),
                 dono.getEmail(),
-                dono.getSenha()
+                dono.getSenha(),
+                dono.getCep(),
+                dono.getLogradouro(),
+                dono.getComplemento(),
+                dono.getBairro(),
+                dono.getCidade(),
+                dono.getUf(),
+                dono.getNumero()
         );
     }
 
@@ -48,6 +55,13 @@ public class DonoService {
                 .rg(donoDTO.rg())
                 .email(donoDTO.email())
                 .senha(donoDTO.senha())
+                .cep(donoDTO.cep())
+                .logradouro(donoDTO.logradouro())
+                .complemento(donoDTO.complemento())
+                .bairro(donoDTO.bairro())
+                .cidade(donoDTO.cidade())
+                .uf(donoDTO.uf())
+                .numero(donoDTO.numero())
                 .build();
     }
 }
