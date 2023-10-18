@@ -1,9 +1,11 @@
 package br.com.petcare.dominio.entidade;
 
 import br.com.petcare.dominio.enums.EspecieEnum;
+import br.com.petcare.dominio.enums.GeneroEnum;
 import br.com.petcare.dominio.enums.HumorEnum;
 import br.com.petcare.dominio.enums.RacaEnum;
 import br.com.petcare.dominio.enums.conversor.EspecieEnumConversor;
+import br.com.petcare.dominio.enums.conversor.GeneroEnumConversor;
 import br.com.petcare.dominio.enums.conversor.HumorEnumConversor;
 import br.com.petcare.dominio.enums.conversor.RacaEnumConversor;
 import jakarta.persistence.*;
@@ -39,6 +41,9 @@ public class Pet {
 
     @Convert(converter = HumorEnumConversor.class)
     private HumorEnum humor;
+
+    @Convert(converter = GeneroEnumConversor.class)
+    private GeneroEnum genero;
 
     @ManyToOne
     private Dono dono;

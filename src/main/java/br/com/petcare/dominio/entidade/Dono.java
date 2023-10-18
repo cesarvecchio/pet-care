@@ -28,6 +28,20 @@ public class Dono {
 
     private String senha;
 
-    @OneToMany
+    private String cep;
+
+    private String logradouro;
+
+    private String complemento;
+
+    private String bairro;
+
+    private String cidade;
+
+    private String uf;
+
+    private Integer numero;
+
+    @OneToMany(mappedBy = "dono")
     private List<Pet> listaPet;
 }

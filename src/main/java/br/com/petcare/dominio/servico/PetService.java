@@ -3,6 +3,7 @@ package br.com.petcare.dominio.servico;
 import br.com.petcare.dominio.dto.PetDTO;
 import br.com.petcare.dominio.entidade.Pet;
 import br.com.petcare.dominio.enums.EspecieEnum;
+import br.com.petcare.dominio.enums.GeneroEnum;
 import br.com.petcare.dominio.enums.HumorEnum;
 import br.com.petcare.dominio.enums.RacaEnum;
 import br.com.petcare.infra.repositorio.PetRepository;
@@ -40,6 +41,8 @@ public class PetService {
                         ? null : pet.getRaca().getDescricao(),
                 ObjectUtils.isEmpty(pet.getHumor())
                         ? null : pet.getHumor().getDescricao(),
+                ObjectUtils.isEmpty(pet.getGenero())
+                        ? null : pet.getGenero().getDescricao(),
                 pet.getDono()
         );
     }
@@ -57,6 +60,8 @@ public class PetService {
                         ? null : RacaEnum.recuperarRaca(petDTO.raca()))
                 .humor(ObjectUtils.isEmpty(petDTO.humor())
                         ? null : HumorEnum.recuperarHumor(petDTO.humor()))
+                .genero(ObjectUtils.isEmpty(petDTO.genero())
+                        ? null : GeneroEnum.recuperarGenero(petDTO.genero()))
                 .dono(petDTO.dono())
                 .build();
     }

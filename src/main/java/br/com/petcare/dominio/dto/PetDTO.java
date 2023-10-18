@@ -13,6 +13,7 @@ public record PetDTO(
          String especie,
          String raca,
          String humor,
+         String genero,
          Dono dono
 ) {
 }
