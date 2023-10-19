@@ -1,7 +1,5 @@
 package br.com.petcare.dominio.dto;
 
-import br.com.petcare.dominio.entidade.Dono;
-
 import java.time.LocalDate;
 
 public record PetDTO(
@@ -14,6 +12,6 @@ public record PetDTO(
          String raca,
          String humor,
          String genero,
-         Dono dono
+         DonoDTO dono
 ) {
 }

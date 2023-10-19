@@ -1,28 +1,54 @@
 package br.com.petcare.dominio.servico;
 
+import br.com.petcare.dominio.dto.DonoCadastroDTO;
 import br.com.petcare.dominio.dto.DonoDTO;
 import br.com.petcare.dominio.entidade.Dono;
 import br.com.petcare.infra.excecao.CpfException;
+import br.com.petcare.infra.excecao.DonoNaoEncontradoException;
 import br.com.petcare.infra.repositorio.DonoRepository;
+import br.com.petcare.infra.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DonoService {
     private final DonoRepository donoRepository;
+    private final Utils utils;
 
     @Autowired
-    public DonoService(DonoRepository donoRepository) {
+    public DonoService(DonoRepository donoRepository, Utils utils) {
         this.donoRepository = donoRepository;
+        this.utils = utils;
     }
 
-    public DonoDTO cadastrar(DonoDTO donoDTO) {
+    public DonoDTO cadastrar(DonoCadastroDTO donoDTO) {
         Dono dono = this.toEntity(donoDTO);
 
         if (this.cpfExistente(donoDTO.cpf()))
             throw new CpfException("Esse cpf já está sendo utilizado");
 
         return this.toDto(donoRepository.save(dono));
+    }
+
+    public DonoDTO atualizar(Integer id, DonoDTO donoDTO) {
+        Dono dono = buscaPorId(id);
+
+        utils.copyNonNullProperties(donoDTO, dono);
+
+        return this.toDto(donoRepository.save(dono));
+    }
+
+    public void deletar(Integer id) {
+        if(!this.donoRepository.existsById(id)) throw new DonoNaoEncontradoException(
+                String.format("Dono com o id '%d' não existe!", id));
+
+        this.donoRepository.deleteById(1);
+    }
+
+    public Dono buscaPorId(Integer idDono) {
+        return this.donoRepository.findById(idDono)
+                .orElseThrow(() -> new DonoNaoEncontradoException(
+                        String.format("Dono com o id '%d' não encontrado", idDono)));
     }
 
     public Boolean cpfExistente(String cpf) {
@@ -34,20 +60,20 @@ public class DonoService {
                 dono.getId(),
                 dono.getNome(),
                 dono.getCpf(),
-                dono.getRg(),
-                dono.getEmail(),
-                dono.getSenha(),
-                dono.getCep(),
-                dono.getLogradouro(),
-                dono.getComplemento(),
-                dono.getBairro(),
-                dono.getCidade(),
-                dono.getUf(),
-                dono.getNumero()
+                dono.getRg()
         );
     }
 
-    private Dono toEntity(DonoDTO donoDTO) {
+    public Dono toEntity(DonoDTO donoDTO) {
+        return Dono.builder()
+                .id(donoDTO.id())
+                .nome(donoDTO.nome())
+                .cpf(donoDTO.cpf())
+                .rg(donoDTO.rg())
+                .build();
+    }
+
+    public Dono toEntity(DonoCadastroDTO donoDTO) {
         return Dono.builder()
                 .id(donoDTO.id())
                 .nome(donoDTO.nome())
@@ -55,13 +81,7 @@ public class DonoService {
                 .rg(donoDTO.rg())
                 .email(donoDTO.email())
                 .senha(donoDTO.senha())
-                .cep(donoDTO.cep())
-                .logradouro(donoDTO.logradouro())
-                .complemento(donoDTO.complemento())
-                .bairro(donoDTO.bairro())
-                .cidade(donoDTO.cidade())
-                .uf(donoDTO.uf())
-                .numero(donoDTO.numero())
                 .build();
     }
+
 }

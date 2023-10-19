@@ -3,33 +3,29 @@ package br.com.petcare.dominio.entidade;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Getter
-@Setter
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-@Table(name = "TB_DONO")
-public class Dono {
-
+@Table(name = "TB_ENDERECO")
+public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
+    private String cep;
 
-    private String cpf;
+    private String logradouro;
 
-    private String rg;
+    private String complemento;
 
-    private String email;
+    private String bairro;
 
-    private String senha;
+    private String cidade;
 
-    @OneToMany(mappedBy = "dono")
-    private List<Pet> listaPet;
+    private String uf;
+
+    private Integer numero;
 }

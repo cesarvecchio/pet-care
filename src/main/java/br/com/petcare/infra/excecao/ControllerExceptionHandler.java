@@ -25,4 +25,19 @@ public class ControllerExceptionHandler {
 
         return ResponseEntity.status(status).body(standardError);
     }
+
+    @ExceptionHandler(DonoNaoEncontradoException.class)
+    public ResponseEntity<StandardError> donoNaoEncontradoException(DonoNaoEncontradoException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        StandardError standardError = StandardError.builder()
+                .timestamp(Instant.now())
+                .status(status.value())
+                .error("Dono não encontrado")
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(status).body(standardError);
+    }
 }

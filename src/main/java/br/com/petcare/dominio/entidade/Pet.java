@@ -11,11 +11,13 @@ import br.com.petcare.dominio.enums.conversor.RacaEnumConversor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @Entity

@@ -1,9 +1,11 @@
 package br.com.petcare.dominio.dto;
 
-public record DonoDTO(
+public record DonoCadastroDTO(
         Integer id,
         String nome,
         String cpf,
-        String rg
+        String rg,
+        String email,
+        String senha
 ) {
 }

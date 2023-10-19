@@ -1,6 +1,8 @@
 package br.com.petcare.dominio.servico;
 
+import br.com.petcare.dominio.dto.DonoDTO;
 import br.com.petcare.dominio.dto.PetDTO;
+import br.com.petcare.dominio.entidade.Dono;
 import br.com.petcare.dominio.entidade.Pet;
 import br.com.petcare.dominio.enums.EspecieEnum;
 import br.com.petcare.dominio.enums.GeneroEnum;
@@ -17,10 +19,12 @@ import org.springframework.util.ObjectUtils;
 public class PetService {
 
     private final PetRepository petRepository;
+    private final DonoService donoService;
 
     @Autowired
-    public PetService(PetRepository petRepository) {
+    public PetService(PetRepository petRepository, DonoService donoService) {
         this.petRepository = petRepository;
+        this.donoService = donoService;
     }
 
     public Page<PetDTO> findAll(Pageable pageable) {
@@ -28,7 +32,16 @@ public class PetService {
         return pets.map(this::toDTO);
     }
 
-    private PetDTO toDTO(Pet pet) {
+    public PetDTO criarPet(PetDTO petDTO, Integer idDono) {
+        Pet pet = toEntity(petDTO);
+        pet.setDono(this.donoService.buscaPorId(idDono));
+
+        petDTO = this.toDTO(this.petRepository.save(pet));
+
+        return petDTO;
+    }
+
+    public PetDTO toDTO(Pet pet) {
         return new PetDTO(
                 pet.getId(),
                 pet.getNome(),
@@ -43,26 +56,33 @@ public class PetService {
                         ? null : pet.getHumor().getDescricao(),
                 ObjectUtils.isEmpty(pet.getGenero())
                         ? null : pet.getGenero().getDescricao(),
-                pet.getDono()
+                ObjectUtils.isEmpty(pet.getDono())
+                        ? null : this.donoService.toDto(pet.getDono())
         );
     }
 
-    private Pet toEntity(PetDTO petDTO) {
+    public Pet toEntity(PetDTO petDTO) {
         return Pet.builder()
                 .id(petDTO.id())
                 .nome(petDTO.nome())
                 .dataNascimento(petDTO.dataNascimento())
                 .peso(petDTO.peso())
                 .tamanho(petDTO.tamanho())
+
                 .especie(ObjectUtils.isEmpty(petDTO.especie())
                         ? null : EspecieEnum.recuperarEspecie(petDTO.especie()))
+
                 .raca(ObjectUtils.isEmpty(petDTO.raca())
                         ? null : RacaEnum.recuperarRaca(petDTO.raca()))
+
                 .humor(ObjectUtils.isEmpty(petDTO.humor())
                         ? null : HumorEnum.recuperarHumor(petDTO.humor()))
+
                 .genero(ObjectUtils.isEmpty(petDTO.genero())
                         ? null : GeneroEnum.recuperarGenero(petDTO.genero()))
-                .dono(petDTO.dono())
+
+                .dono(ObjectUtils.isEmpty(petDTO.dono())
+                        ? null : this.donoService.toEntity(petDTO.dono()))
                 .build();
     }
 
