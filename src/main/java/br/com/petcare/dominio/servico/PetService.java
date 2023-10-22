@@ -1,6 +1,5 @@
 package br.com.petcare.dominio.servico;
 
-import br.com.petcare.dominio.dto.DonoDTO;
 import br.com.petcare.dominio.dto.PetDTO;
 import br.com.petcare.dominio.entidade.Dono;
 import br.com.petcare.dominio.entidade.Pet;
@@ -8,23 +7,30 @@ import br.com.petcare.dominio.enums.EspecieEnum;
 import br.com.petcare.dominio.enums.GeneroEnum;
 import br.com.petcare.dominio.enums.HumorEnum;
 import br.com.petcare.dominio.enums.RacaEnum;
+import br.com.petcare.infra.excecao.NaoEncontradoException;
+import br.com.petcare.infra.excecao.PetNaoPertenceAoDonoException;
 import br.com.petcare.infra.repositorio.PetRepository;
+import br.com.petcare.infra.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
+
 @Service
 public class PetService {
 
     private final PetRepository petRepository;
     private final DonoService donoService;
+    private final Utils utils;
 
     @Autowired
-    public PetService(PetRepository petRepository, DonoService donoService) {
+    public PetService(PetRepository petRepository, DonoService donoService, Utils utils) {
         this.petRepository = petRepository;
         this.donoService = donoService;
+        this.utils = utils;
     }
 
     public Page<PetDTO> findAll(Pageable pageable) {
@@ -32,13 +38,68 @@ public class PetService {
         return pets.map(this::toDTO);
     }
 
-    public PetDTO criarPet(PetDTO petDTO, Integer idDono) {
+    public PetDTO cadastrar(PetDTO petDTO, Integer idDono) {
         Pet pet = toEntity(petDTO);
         pet.setDono(this.donoService.buscaPorId(idDono));
 
         petDTO = this.toDTO(this.petRepository.save(pet));
 
         return petDTO;
+    }
+
+    public PetDTO atualizar(Integer idDono, Integer idPet, PetDTO petDTO) {
+        Dono dono = this.donoService.buscaPorId(idDono);
+
+        Pet pet = this.buscarPorId(idPet);
+
+        if(!petPertenceAoDono(pet, dono))
+            throw new PetNaoPertenceAoDonoException(
+                    String.format("O pet com o id '%d' não pertence ao dono com id '%d'!",
+                            idPet, idDono));
+
+        this.utils.copyNonNullProperties(petDTO, pet);
+
+        return this.toDTO(petRepository.save(pet));
+    }
+
+    public void deletar(Integer idDono, Integer idPet) {
+        this.donoService.existePorId(idDono);
+        this.existePorId(idPet);
+
+        if(!this.petPertenceAoDono(idPet, idDono))
+            throw new PetNaoPertenceAoDonoException(
+                    String.format("O pet com o id '%d' não pertence ao dono com id '%d'!",
+                            idPet, idDono));
+
+        this.petRepository.deleteById(idPet);
+
+    }
+
+    public Pet buscarPorId(Integer idPet) {
+        return this.petRepository.findById(idPet)
+                .orElseThrow(() -> new NaoEncontradoException(
+                        String.format("Pet com o id '%d' não encontrado", idPet)));
+    }
+
+    public Page<PetDTO> consultarPetsPorDono(Integer idDono, Pageable pageable) {
+        this.donoService.existePorId(idDono);
+        Page<Pet> pets = this.petRepository.findAllByDonoId(idDono, pageable);
+
+        return pets.map(this::toDTO);
+    }
+
+    public void existePorId(Integer idPet) {
+        if(!this.petRepository.existsById(idPet))
+            throw new NaoEncontradoException(
+                    String.format("Pet com o id '%d' não encontrado", idPet));
+    }
+
+    public boolean petPertenceAoDono(Pet pet, Dono dono) {
+        return ObjectUtils.nullSafeEquals(pet.getDono().getId(), dono.getId());
+    }
+
+    public boolean petPertenceAoDono(Integer petId, Integer donoId) {
+        return this.petRepository.existsPetByIdAndDonoId(petId, donoId);
     }
 
     public PetDTO toDTO(Pet pet) {
@@ -85,5 +146,4 @@ public class PetService {
                         ? null : this.donoService.toEntity(petDTO.dono()))
                 .build();
     }
-
 }

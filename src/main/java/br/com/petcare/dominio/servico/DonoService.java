@@ -4,7 +4,7 @@ import br.com.petcare.dominio.dto.DonoCadastroDTO;
 import br.com.petcare.dominio.dto.DonoDTO;
 import br.com.petcare.dominio.entidade.Dono;
 import br.com.petcare.infra.excecao.CpfException;
-import br.com.petcare.infra.excecao.DonoNaoEncontradoException;
+import br.com.petcare.infra.excecao.NaoEncontradoException;
 import br.com.petcare.infra.repositorio.DonoRepository;
 import br.com.petcare.infra.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,20 +39,26 @@ public class DonoService {
     }
 
     public void deletar(Integer id) {
-        if(!this.donoRepository.existsById(id)) throw new DonoNaoEncontradoException(
-                String.format("Dono com o id '%d' não existe!", id));
+        this.existePorId(id);
 
-        this.donoRepository.deleteById(1);
+        this.donoRepository.deleteById(id);
     }
 
     public Dono buscaPorId(Integer idDono) {
         return this.donoRepository.findById(idDono)
-                .orElseThrow(() -> new DonoNaoEncontradoException(
+                .orElseThrow(() -> new NaoEncontradoException(
                         String.format("Dono com o id '%d' não encontrado", idDono)));
     }
 
-    public Boolean cpfExistente(String cpf) {
+    public boolean cpfExistente(String cpf) {
         return donoRepository.existsByCpf(cpf);
+    }
+
+    public void existePorId(Integer idDono){
+        if(!this.donoRepository.existsById(idDono))
+            throw new NaoEncontradoException(
+                    String.format("Dono com o id '%d' não encontrado", idDono));
+
     }
 
     public DonoDTO toDto(Dono dono) {
