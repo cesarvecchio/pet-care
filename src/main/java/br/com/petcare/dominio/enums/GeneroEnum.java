@@ -1,21 +1,27 @@
 package br.com.petcare.dominio.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum GeneroEnum {
-    FEMEA("Fêmea"),
-    MACHO("Macho");
+    FEMEA(1, "Fêmea"),
+    MACHO(2, "Macho");
 
+    private final Integer id;
     private final String descricao;
 
-    GeneroEnum(String descricao) {
-        this.descricao = descricao;
+    public static GeneroEnum recuperarGenero(String descricao) {
+        for (GeneroEnum value : values()) {
+            if(value.getDescricao().equals(descricao)) return value;
+        }
+        return null;
     }
 
-    public static GeneroEnum recuperarGenero(String especie) {
+    public static GeneroEnum recuperarGenero(Integer id) {
         for (GeneroEnum value : values()) {
-            if(value.getDescricao().equals(especie)) return value;
+            if(value.getId().equals(id)) return value;
         }
         return null;
     }

@@ -5,15 +5,15 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
-public class EspecieEnumConversor implements AttributeConverter<EspecieEnum, String> {
+public class EspecieEnumConversor implements AttributeConverter<EspecieEnum, Integer> {
 
     @Override
-    public String convertToDatabaseColumn(EspecieEnum attribute) {
-        return attribute.getDescricao();
+    public Integer convertToDatabaseColumn(EspecieEnum attribute) {
+        return attribute.getId();
     }
 
     @Override
-    public EspecieEnum convertToEntityAttribute(String dbData) {
+    public EspecieEnum convertToEntityAttribute(Integer dbData) {
         return EspecieEnum.recuperarEspecie(dbData);
     }
 }

@@ -1,22 +1,28 @@
 package br.com.petcare.dominio.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum HumorEnum {
-    DOCIL("Dócil"),
-    BRINCALHAO("Brincalhão"),
-    AGRESSIVO("Agressivo");
+    DOCIL(1, "Dócil"),
+    BRINCALHAO(2, "Brincalhão"),
+    AGRESSIVO(3, "Agressivo");
 
+    private final Integer id;
     private final String descricao;
 
-    HumorEnum(String descricao) {
-        this.descricao = descricao;
+    public static HumorEnum recuperarHumor(String descricao) {
+        for (HumorEnum value : values()) {
+            if(value.getDescricao().equals(descricao)) return value;
+        }
+        return null;
     }
 
-    public static HumorEnum recuperarHumor(String raca) {
+    public static HumorEnum recuperarHumor(Integer id) {
         for (HumorEnum value : values()) {
-            if(value.getDescricao().equals(raca)) return value;
+            if(value.getId().equals(id)) return value;
         }
         return null;
     }

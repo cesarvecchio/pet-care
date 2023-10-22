@@ -3,14 +3,14 @@ package br.com.petcare.dominio.enums.conversor;
 import br.com.petcare.dominio.enums.GeneroEnum;
 import jakarta.persistence.AttributeConverter;
 
-public class GeneroEnumConversor implements AttributeConverter<GeneroEnum, String> {
+public class GeneroEnumConversor implements AttributeConverter<GeneroEnum, Integer> {
     @Override
-    public String convertToDatabaseColumn(GeneroEnum attribute) {
-        return attribute.getDescricao();
+    public Integer convertToDatabaseColumn(GeneroEnum attribute) {
+        return attribute.getId();
     }
 
     @Override
-    public GeneroEnum convertToEntityAttribute(String dbData) {
+    public GeneroEnum convertToEntityAttribute(Integer dbData) {
         return GeneroEnum.recuperarGenero(dbData);
     }
 }

@@ -1,39 +1,46 @@
 package br.com.petcare.dominio.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum RacaEnum {
-    PERSA("Persa"),
-    SIAMES("Siamês"),
-    MAINE_COON("Maine Coon"),
-    ANGORA("Angorá"),
-    SPHYNX("Sphynx"),
-    RAGDOLL("Ragdoll"),
-    ASHERA("Ashera"),
-    AMERICAN_SHORTHAIR("American Shorthair"),
+    CACHORRO_SRD(1, "Desconhecido"),
+    OUTRO(2, "Outro"),
 
-    SPITZ_ALEMAO("Spitz Alemão"),
-    BULLDOG_FRANCES("Bulldog Francês"),
-    SHIH_TZU("Shih Tzu"),
-    ROTTWILER("Rottweiler"),
-    PUG("Pug"),
-    GOLDEN_RETRIVER("Golden Retriever"),
-    PASTOR_ALEMAO("Pastor Alemão"),
-    YORKSHIRE_TERRIER("Yorkshire Terrier"),
+    PERSA(3, "Persa"),
+    SIAMES(4, "Siamês"),
+    MAINE_COON(5, "Maine Coon"),
+    ANGORA(6, "Angorá"),
+    SPHYNX(7, "Sphynx"),
+    RAGDOLL(8, "Ragdoll"),
+    ASHERA(9, "Ashera"),
+    AMERICAN_SHORTHAIR(10, "American Shorthair"),
 
-    CACHORRO_SRD("Desconhecido"),
-    OUTRO("Outro");
+    SPITZ_ALEMAO(11, "Spitz Alemão"),
+    BULLDOG_FRANCES(12, "Bulldog Francês"),
+    SHIH_TZU(13, "Shih Tzu"),
+    ROTTWILER(14, "Rottweiler"),
+    PUG(15, "Pug"),
+    GOLDEN_RETRIVER(16, "Golden Retriever"),
+    PASTOR_ALEMAO(17, "Pastor Alemão"),
+    YORKSHIRE_TERRIER(18, "Yorkshire Terrier");
 
+    private final Integer id;
     private final String descricao;
 
-    RacaEnum(String descricao) {
-        this.descricao = descricao;
+
+    public static RacaEnum recuperarRaca(String descricao) {
+        for (RacaEnum value : values()) {
+            if(value.getDescricao().equals(descricao)) return value;
+        }
+        return null;
     }
 
-    public static RacaEnum recuperarRaca(String raca) {
+    public static RacaEnum recuperarRaca(Integer id) {
         for (RacaEnum value : values()) {
-            if(value.getDescricao().equals(raca)) return value;
+            if(value.getId().equals(id)) return value;
         }
         return null;
     }

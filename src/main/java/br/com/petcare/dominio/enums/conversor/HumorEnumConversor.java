@@ -5,14 +5,14 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
-public class HumorEnumConversor implements AttributeConverter<HumorEnum, String> {
+public class HumorEnumConversor implements AttributeConverter<HumorEnum, Integer> {
     @Override
-    public String convertToDatabaseColumn(HumorEnum attribute) {
-        return attribute.getDescricao();
+    public Integer convertToDatabaseColumn(HumorEnum attribute) {
+        return attribute.getId();
     }
 
     @Override
-    public HumorEnum convertToEntityAttribute(String dbData) {
+    public HumorEnum convertToEntityAttribute(Integer dbData) {
         return HumorEnum.recuperarHumor(dbData);
     }
 }
