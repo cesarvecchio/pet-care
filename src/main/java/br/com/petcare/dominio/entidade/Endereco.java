@@ -8,12 +8,8 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@Entity
-@Table(name = "TB_ENDERECO")
+@Embeddable
 public class Endereco {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
     private String cep;
 
@@ -28,4 +24,8 @@ public class Endereco {
     private String uf;
 
     private Integer numero;
+
+    private Double latitude;
+
+    private Double longitude;
 }

@@ -4,5 +4,5 @@ INSERT INTO TB_DONO (NOME, CPF, RG, EMAIL, SENHA)
 INSERT INTO tb_pet (nome, especie, raca, humor, genero, dono_id)
     VALUES ('Pet do grupo', 1, 4, 1, 2, 1);
 
-INSERT INTO TB_PRESTADOR_SERVICO (tipo_servico)
+INSERT INTO TB_PET_SHOP (tipo_servico)
     VALUES (1);

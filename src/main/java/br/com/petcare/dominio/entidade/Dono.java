@@ -30,8 +30,9 @@ public class Dono {
 
     private String senha;
 
-    //TODO: Verificar com o grupo se iremos deletar as infomações ou iremos setar uma
-    // propriedade para manter os dados para o processo de auditoria
+    @Embedded
+    private Endereco endereco;
+
     @OneToMany(mappedBy = "dono", cascade = CascadeType.REMOVE)
     private List<Pet> listaPet;
 }

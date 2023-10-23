@@ -8,16 +8,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-@Table(name = "TB_PRESTADOR_SERVICO")
-public class PrestadorServico {
+@Table(name = "TB_PET_SHOP")
+public class PetShop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String nome;
+
+    private String cpf;
+
+    private String cnpj;
+
+    @ElementCollection
+    private List<String> listaFuncionarios;
 
     @Convert(converter = TipoServicoEnumConversor.class)
     private TipoServicoEnum tipoServico;
