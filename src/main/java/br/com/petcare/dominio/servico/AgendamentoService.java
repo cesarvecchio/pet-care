@@ -1,13 +1,15 @@
 package br.com.petcare.dominio.servico;
 
-import br.com.petcare.dominio.dto.AgendamentoCadastroDTO;
-import br.com.petcare.dominio.dto.AgendamentoDTO;
+import br.com.petcare.dominio.dto.AgendamentoRequestDTO;
+import br.com.petcare.dominio.dto.AgendamentoResponseDTO;
 import br.com.petcare.dominio.entidade.Agendamento;
 import br.com.petcare.dominio.enums.StatusEnum;
 import br.com.petcare.infra.repositorio.AgendamentoRepository;
+import org.springframework.stereotype.Service;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
 
+@Service
 public class AgendamentoService {
 
     private final AgendamentoRepository agendamentoRepository;
@@ -22,11 +24,16 @@ public class AgendamentoService {
         this.petService = petService;
     }
 
-    public AgendamentoDTO cadastrar(Integer idDono, Integer idPetShop, Integer idPet, AgendamentoCadastroDTO agendamentoCadastroDTO) {
-        return null;
+    public AgendamentoResponseDTO cadastrar(Integer idDono, Integer idPetShop, Integer idPet, AgendamentoRequestDTO agendamentoRequestDTO) {
+        Agendamento agendamento = toEntity(agendamentoRequestDTO);
+        agendamento.setDono(donoService.buscaPorId(idDono));
+        agendamento.setPetShop(petShopService.buscarPorId(idPetShop));
+        agendamento.setPet(petService.buscarPorId(idPet));
+
+        return toResponseDTO(agendamentoRepository.save(agendamento));
     }
 
-    public Agendamento toEntity(AgendamentoDTO agendamentoDTO) {
+    public Agendamento toEntity(AgendamentoRequestDTO agendamentoDTO) {
         return Agendamento.builder()
                 .dataAgendamento(agendamentoDTO.dataAgendamento())
                 .observacao(agendamentoDTO.observacao())
@@ -37,16 +44,15 @@ public class AgendamentoService {
                 .build();
     }
 
-    public AgendamentoDTO toDTO(Agendamento agendamento) {
-        return new AgendamentoDTO(
+    public AgendamentoResponseDTO toResponseDTO(Agendamento agendamento) {
+        return new AgendamentoResponseDTO(
                 agendamento.getDataAgendamento(),
                 agendamento.getObservacao(),
                 isEmpty(agendamento.getStatus()) ? null : agendamento.getStatus().getDescricao(),
                 isEmpty(agendamento.getDono()) ? null : donoService.toDto(agendamento.getDono()),
-                isEmpty(agendamento.getPetShop()) ? null : petShopService.toDTO(agendamento.getPetShop()),
+                isEmpty(agendamento.getPetShop()) ? null : petShopService.toDTOResposta(agendamento.getPetShop()),
                 isEmpty(agendamento.getPetShop()) ? null : petService.toDTO(agendamento.getPet())
         );
     }
-
 
 }
