@@ -1,4 +1,4 @@
-package br.com.petcare.infra.excecao;
+package br.com.petcare.aplicacao.controller.excecao;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

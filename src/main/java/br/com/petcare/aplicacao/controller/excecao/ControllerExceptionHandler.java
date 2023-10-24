@@ -1,4 +1,4 @@
-package br.com.petcare.infra.excecao;
+package br.com.petcare.aplicacao.controller.excecao;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

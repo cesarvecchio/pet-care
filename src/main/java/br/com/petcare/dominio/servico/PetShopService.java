@@ -31,7 +31,7 @@ public class PetShopService {
     public PetShopDTO cadastrar(PetShopDTO petShopDTO) {
         PetShop petShop = toEntity(petShopDTO);
 
-        return null;
+        return toDTO(prestadorServicoRepository.save(petShop));
     }
 
     public PetShopDTO toDTO(PetShop prestadorServico) {

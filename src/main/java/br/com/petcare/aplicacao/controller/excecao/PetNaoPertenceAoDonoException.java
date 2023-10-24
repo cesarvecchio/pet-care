@@ -1,4 +1,4 @@
-package br.com.petcare.infra.excecao;
+package br.com.petcare.aplicacao.controller.excecao;
 
 public class PetNaoPertenceAoDonoException extends RuntimeException{
     public PetNaoPertenceAoDonoException(String message) {

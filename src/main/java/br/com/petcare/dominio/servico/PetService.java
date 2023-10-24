@@ -7,8 +7,8 @@ import br.com.petcare.dominio.enums.EspecieEnum;
 import br.com.petcare.dominio.enums.GeneroEnum;
 import br.com.petcare.dominio.enums.HumorEnum;
 import br.com.petcare.dominio.enums.RacaEnum;
-import br.com.petcare.infra.excecao.NaoEncontradoException;
-import br.com.petcare.infra.excecao.PetNaoPertenceAoDonoException;
+import br.com.petcare.aplicacao.controller.excecao.NaoEncontradoException;
+import br.com.petcare.aplicacao.controller.excecao.PetNaoPertenceAoDonoException;
 import br.com.petcare.infra.repositorio.PetRepository;
 import br.com.petcare.infra.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-
-import java.util.List;
 
 @Service
 public class PetService {
