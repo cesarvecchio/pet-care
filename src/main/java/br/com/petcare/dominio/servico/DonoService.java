@@ -87,6 +87,7 @@ public class DonoService {
                 .rg(donoDTO.rg())
                 .email(donoDTO.email())
                 .senha(donoDTO.senha())
+                .endereco(donoDTO.endereco())
                 .build();
     }
 

@@ -3,9 +3,11 @@ package br.com.petcare.dominio.entidade;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @Embeddable
@@ -23,7 +25,7 @@ public class Endereco {
 
     private String uf;
 
-    private Integer numero;
+    private String numero;
 
     private Double latitude;
 
