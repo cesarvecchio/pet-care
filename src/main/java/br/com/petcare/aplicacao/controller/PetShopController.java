@@ -1,6 +1,7 @@
 package br.com.petcare.aplicacao.controller;
 
-import br.com.petcare.dominio.dto.PetShopDTO;
+import br.com.petcare.dominio.dto.PetShopRequisicaoDTO;
+import br.com.petcare.dominio.dto.PetShopRespostaDTO;
 import br.com.petcare.dominio.servico.PetShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,12 +21,18 @@ public class PetShopController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PetShopDTO>> buscarTodos(@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+    public ResponseEntity<Page<PetShopRequisicaoDTO>> buscarTodos(@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
         return ResponseEntity.ok(petShopService.buscarTodos(pageable));
     }
 
     @PostMapping
-    public ResponseEntity<PetShopDTO> cadastrar(@RequestBody PetShopDTO petShopDTO) {
-        return ResponseEntity.ok(petShopService.cadastrar(petShopDTO));
+    public ResponseEntity<PetShopRespostaDTO> cadastrar(@RequestBody PetShopRequisicaoDTO petShopRequisicaoDTO) {
+        return ResponseEntity.ok(petShopService.cadastrar(petShopRequisicaoDTO));
+    }
+
+    @PutMapping("{idPetShop}")
+    public ResponseEntity<PetShopRespostaDTO> atualizar(@PathVariable Integer idPetShop,
+                                                        @RequestBody PetShopRequisicaoDTO petShopRequisicaoDTO) {
+        return ResponseEntity.ok(petShopService.atualizar(idPetShop, petShopRequisicaoDTO));
     }
 }

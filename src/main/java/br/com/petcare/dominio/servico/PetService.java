@@ -38,56 +38,56 @@ public class PetService {
 
     public PetDTO cadastrar(PetDTO petDTO, Integer idDono) {
         Pet pet = toEntity(petDTO);
-        pet.setDono(this.donoService.buscaPorId(idDono));
+        pet.setDono(donoService.buscaPorId(idDono));
 
-        petDTO = this.toDTO(this.petRepository.save(pet));
+        petDTO = toDTO(petRepository.save(pet));
 
         return petDTO;
     }
 
     public PetDTO atualizar(Integer idDono, Integer idPet, PetDTO petDTO) {
-        Dono dono = this.donoService.buscaPorId(idDono);
+        Dono dono = donoService.buscaPorId(idDono);
 
-        Pet pet = this.buscarPorId(idPet);
+        Pet pet = buscarPorId(idPet);
 
         if(!petPertenceAoDono(pet, dono))
             throw new PetNaoPertenceAoDonoException(
                     String.format("O pet com o id '%d' não pertence ao dono com id '%d'!",
                             idPet, idDono));
 
-        this.utils.copyNonNullProperties(petDTO, pet);
+        utils.copyNonNullProperties(petDTO, pet);
 
-        return this.toDTO(petRepository.save(pet));
+        return toDTO(petRepository.save(pet));
     }
 
     public void deletar(Integer idDono, Integer idPet) {
-        this.donoService.existePorId(idDono);
-        this.existePorId(idPet);
+        donoService.existePorId(idDono);
+        existePorId(idPet);
 
-        if(!this.petPertenceAoDono(idPet, idDono))
+        if(!petPertenceAoDono(idPet, idDono))
             throw new PetNaoPertenceAoDonoException(
                     String.format("O pet com o id '%d' não pertence ao dono com id '%d'!",
                             idPet, idDono));
 
-        this.petRepository.deleteById(idPet);
+        petRepository.deleteById(idPet);
 
     }
 
     public Pet buscarPorId(Integer idPet) {
-        return this.petRepository.findById(idPet)
+        return petRepository.findById(idPet)
                 .orElseThrow(() -> new NaoEncontradoException(
                         String.format("Pet com o id '%d' não encontrado", idPet)));
     }
 
     public Page<PetDTO> consultarPetsPorDono(Integer idDono, Pageable pageable) {
-        this.donoService.existePorId(idDono);
-        Page<Pet> pets = this.petRepository.findAllByDonoId(idDono, pageable);
+        donoService.existePorId(idDono);
+        Page<Pet> pets = petRepository.findAllByDonoId(idDono, pageable);
 
         return pets.map(this::toDTO);
     }
 
     public void existePorId(Integer idPet) {
-        if(!this.petRepository.existsById(idPet))
+        if(!petRepository.existsById(idPet))
             throw new NaoEncontradoException(
                     String.format("Pet com o id '%d' não encontrado", idPet));
     }
@@ -97,7 +97,7 @@ public class PetService {
     }
 
     public boolean petPertenceAoDono(Integer petId, Integer donoId) {
-        return this.petRepository.existsPetByIdAndDonoId(petId, donoId);
+        return petRepository.existsPetByIdAndDonoId(petId, donoId);
     }
 
     public PetDTO toDTO(Pet pet) {
@@ -116,7 +116,7 @@ public class PetService {
                 ObjectUtils.isEmpty(pet.getGenero())
                         ? null : pet.getGenero().getDescricao(),
                 ObjectUtils.isEmpty(pet.getDono())
-                        ? null : this.donoService.toDto(pet.getDono())
+                        ? null : donoService.toDto(pet.getDono())
         );
     }
 
@@ -141,7 +141,7 @@ public class PetService {
                         ? null : GeneroEnum.recuperarGenero(petDTO.genero()))
 
                 .dono(ObjectUtils.isEmpty(petDTO.dono())
-                        ? null : this.donoService.toEntity(petDTO.dono()))
+                        ? null : donoService.toEntity(petDTO.dono()))
                 .build();
     }
 }

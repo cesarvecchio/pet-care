@@ -1,6 +1,8 @@
 package br.com.petcare.dominio.servico;
 
-import br.com.petcare.dominio.dto.PetShopDTO;
+import br.com.petcare.aplicacao.controller.excecao.NaoEncontradoException;
+import br.com.petcare.dominio.dto.PetShopRequisicaoDTO;
+import br.com.petcare.dominio.dto.PetShopRespostaDTO;
 import br.com.petcare.dominio.entidade.PetShop;
 import br.com.petcare.dominio.enums.TipoServicoEnum;
 import br.com.petcare.infra.repositorio.PetShopRepository;
@@ -13,29 +15,43 @@ import org.springframework.util.ObjectUtils;
 
 @Service
 public class PetShopService {
-    private final PetShopRepository prestadorServicoRepository;
+    private final PetShopRepository petShopRepository;
     private final Utils utils;
 
     @Autowired
-    public PetShopService(PetShopRepository prestadorServicoRepository, Utils utils) {
-        this.prestadorServicoRepository = prestadorServicoRepository;
+    public PetShopService(PetShopRepository petShopRepository, Utils utils) {
+        this.petShopRepository = petShopRepository;
         this.utils = utils;
     }
 
-    public Page<PetShopDTO> buscarTodos(Pageable pageable) {
-        Page<PetShop> prestadorServicoPage = prestadorServicoRepository.findAll(pageable);
+    public Page<PetShopRequisicaoDTO> buscarTodos(Pageable pageable) {
+        Page<PetShop> prestadorServicoPage = petShopRepository.findAll(pageable);
 
         return prestadorServicoPage.map(this::toDTO);
     }
 
-    public PetShopDTO cadastrar(PetShopDTO petShopDTO) {
+    public PetShopRespostaDTO cadastrar(PetShopRequisicaoDTO petShopDTO) {
         PetShop petShop = toEntity(petShopDTO);
 
-        return toDTO(prestadorServicoRepository.save(petShop));
+        return toDTOResposta(petShopRepository.save(petShop));
     }
 
-    public PetShopDTO toDTO(PetShop prestadorServico) {
-        return new PetShopDTO(
+    public PetShopRespostaDTO atualizar(Integer idPetShop, PetShopRequisicaoDTO petShopRequisicaoDTO) {
+        PetShop petShop = this.buscarPorId(idPetShop);
+
+        this.utils.copyNonNullProperties(petShopRequisicaoDTO, petShop);
+
+        return this.toDTOResposta(petShopRepository.save(petShop));
+    }
+
+    public PetShop buscarPorId(Integer idPetShop) {
+        return this.petShopRepository.findById(idPetShop)
+                .orElseThrow(() -> new NaoEncontradoException(
+                        String.format("PetShop com o id '%d' não encontrado", idPetShop)));
+    }
+
+    public PetShopRespostaDTO toDTOResposta(PetShop prestadorServico) {
+        return new PetShopRespostaDTO(
                 prestadorServico.getId(),
                 prestadorServico.getNome(),
                 prestadorServico.getCpf(),
@@ -46,7 +62,19 @@ public class PetShopService {
         );
     }
 
-    public PetShop toEntity(PetShopDTO dto) {
+    public PetShopRequisicaoDTO toDTO(PetShop prestadorServico) {
+        return new PetShopRequisicaoDTO(
+                prestadorServico.getId(),
+                prestadorServico.getNome(),
+                prestadorServico.getCpf(),
+                prestadorServico.getCnpj(),
+                prestadorServico.getListaFuncionarios(),
+                ObjectUtils.isEmpty(prestadorServico.getTipoServico())
+                        ? null : prestadorServico.getTipoServico().getId()
+        );
+    }
+
+    public PetShop toEntity(PetShopRequisicaoDTO dto) {
         return PetShop.builder()
                 .id(dto.id())
                 .nome(dto.nome())
