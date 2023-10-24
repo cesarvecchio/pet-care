@@ -7,7 +7,7 @@ public record AgendamentoDTO(
         String observacao,
         String status,
         DonoDTO dono,
-        PetShopDTO petShop,
+        PetShopRequisicaoDTO petShop,
         PetDTO pet
 ) {
 }
