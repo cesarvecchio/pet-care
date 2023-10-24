@@ -27,6 +27,9 @@ public class PetShop {
 
     private String cnpj;
 
+    @Embedded
+    private Endereco endereco;
+
     @ElementCollection
     private List<String> listaFuncionarios;
 

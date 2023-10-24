@@ -24,10 +24,10 @@ public class PetShopService {
         this.utils = utils;
     }
 
-    public Page<PetShopRequisicaoDTO> buscarTodos(Pageable pageable) {
+    public Page<PetShopRespostaDTO> buscarTodos(Pageable pageable) {
         Page<PetShop> prestadorServicoPage = petShopRepository.findAll(pageable);
 
-        return prestadorServicoPage.map(this::toDTO);
+        return prestadorServicoPage.map(this::toDTOResposta);
     }
 
     public PetShopRespostaDTO cadastrar(PetShopRequisicaoDTO petShopDTO) {
@@ -50,27 +50,29 @@ public class PetShopService {
                         String.format("PetShop com o id '%d' não encontrado", idPetShop)));
     }
 
-    public PetShopRespostaDTO toDTOResposta(PetShop prestadorServico) {
+    public PetShopRespostaDTO toDTOResposta(PetShop petShop) {
         return new PetShopRespostaDTO(
-                prestadorServico.getId(),
-                prestadorServico.getNome(),
-                prestadorServico.getCpf(),
-                prestadorServico.getCnpj(),
-                prestadorServico.getListaFuncionarios(),
-                ObjectUtils.isEmpty(prestadorServico.getTipoServico())
-                        ? null : prestadorServico.getTipoServico().getDescricao()
+                petShop.getId(),
+                petShop.getNome(),
+                petShop.getCpf(),
+                petShop.getCnpj(),
+                petShop.getListaFuncionarios(),
+                ObjectUtils.isEmpty(petShop.getTipoServico())
+                        ? null : petShop.getTipoServico().getDescricao(),
+                petShop.getEndereco()
         );
     }
 
-    public PetShopRequisicaoDTO toDTO(PetShop prestadorServico) {
+    public PetShopRequisicaoDTO toDTO(PetShop petShop) {
         return new PetShopRequisicaoDTO(
-                prestadorServico.getId(),
-                prestadorServico.getNome(),
-                prestadorServico.getCpf(),
-                prestadorServico.getCnpj(),
-                prestadorServico.getListaFuncionarios(),
-                ObjectUtils.isEmpty(prestadorServico.getTipoServico())
-                        ? null : prestadorServico.getTipoServico().getId()
+                petShop.getId(),
+                petShop.getNome(),
+                petShop.getCpf(),
+                petShop.getCnpj(),
+                petShop.getListaFuncionarios(),
+                ObjectUtils.isEmpty(petShop.getTipoServico())
+                        ? null : petShop.getTipoServico().getId(),
+                petShop.getEndereco()
         );
     }
 
@@ -83,6 +85,7 @@ public class PetShopService {
                 .listaFuncionarios(dto.listaFuncionarios())
                 .tipoServico(ObjectUtils.isEmpty(dto.tipoServico())
                         ? null : TipoServicoEnum.recuperarServico(dto.tipoServico()))
+                .endereco(dto.endereco())
                 .build();
     }
 }

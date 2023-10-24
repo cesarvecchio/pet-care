@@ -1,5 +1,7 @@
 package br.com.petcare.dominio.dto;
 
+import br.com.petcare.dominio.entidade.Endereco;
+
 import java.util.List;
 
 public record PetShopRespostaDTO(
@@ -8,6 +10,7 @@ public record PetShopRespostaDTO(
         String cpf,
         String cnpj,
         List<String> listaFuncionarios,
-        String tipoServico
+        String tipoServico,
+        Endereco endereco
 ) {
 }

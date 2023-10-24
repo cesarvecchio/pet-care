@@ -21,7 +21,7 @@ public class PetShopController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PetShopRequisicaoDTO>> buscarTodos(@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
+    public ResponseEntity<Page<PetShopRespostaDTO>> buscarTodos(@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
         return ResponseEntity.ok(petShopService.buscarTodos(pageable));
     }
 
