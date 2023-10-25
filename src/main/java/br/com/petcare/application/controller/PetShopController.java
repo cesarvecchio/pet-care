@@ -21,8 +21,12 @@ public class PetShopController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PetShopResponseDTO>> buscarTodos(@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable) {
-        return ResponseEntity.ok(petShopService.buscarTodos(pageable));
+    public ResponseEntity<Page<PetShopResponseDTO>> buscarTodos(@PageableDefault(size = 10, page = 0, sort = "id") Pageable pageable,
+                                                                @RequestParam(required = false) String nome,
+                                                                @RequestParam(required = false) String cpf,
+                                                                @RequestParam(required = false) String cnpj,
+                                                                @RequestParam(required = false) Integer tipoServico) {
+        return ResponseEntity.ok(petShopService.buscarTodos(pageable, nome, cpf, cnpj, tipoServico));
     }
 
     @PostMapping
@@ -34,5 +38,16 @@ public class PetShopController {
     public ResponseEntity<PetShopResponseDTO> atualizar(@PathVariable Integer idPetShop,
                                                         @RequestBody PetShopRequestDTO petShopRequestDTO) {
         return ResponseEntity.ok(petShopService.atualizar(idPetShop, petShopRequestDTO));
+    }
+
+    @DeleteMapping("{idPetShop}")
+    public ResponseEntity<Void> deletar(@PathVariable Integer idPetShop) {
+        petShopService.deletar(idPetShop);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{idPetShop}")
+    public ResponseEntity<PetShopResponseDTO> consultarPorId(@PathVariable Integer idPetShop) {
+        return ResponseEntity.ok(petShopService.toDTOResposta(petShopService.buscarPorId(idPetShop)));
     }
 }

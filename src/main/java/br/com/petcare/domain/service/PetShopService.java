@@ -8,6 +8,7 @@ import br.com.petcare.domain.enums.TipoServicoEnum;
 import br.com.petcare.infra.repository.PetShopRepository;
 import br.com.petcare.infra.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,16 @@ public class PetShopService {
         this.utils = utils;
     }
 
-    public Page<PetShopResponseDTO> buscarTodos(Pageable pageable) {
-        Page<PetShop> prestadorServicoPage = petShopRepository.findAll(pageable);
+    public Page<PetShopResponseDTO> buscarTodos(Pageable pageable, String nome, String cpf, String cnpj,
+                                                Integer tipoServico) {
+        Example<PetShop> example = Example.of(PetShop.builder()
+                        .nome(nome)
+                        .cpf(cpf)
+                        .cnpj(cnpj)
+                        .tipoServico(TipoServicoEnum.recuperarServico(tipoServico))
+                        .build());
+
+        Page<PetShop> prestadorServicoPage = petShopRepository.findAll(example, pageable);
 
         return prestadorServicoPage.map(this::toDTOResposta);
     }
@@ -44,10 +53,22 @@ public class PetShopService {
         return this.toDTOResposta(petShopRepository.save(petShop));
     }
 
+    public void deletar(Integer idPetShop) {
+        existePorId(idPetShop);
+
+        petShopRepository.deleteById(idPetShop);
+    }
+
     public PetShop buscarPorId(Integer idPetShop) {
         return this.petShopRepository.findById(idPetShop)
                 .orElseThrow(() -> new NaoEncontradoException(
                         String.format("PetShop com o id '%d' não encontrado", idPetShop)));
+    }
+
+    public void existePorId(Integer idPetShop) {
+        if(!petShopRepository.existsById(idPetShop))
+            throw new NaoEncontradoException(
+                    String.format("Pet Shop com o id '%d' não encontrado", idPetShop));
     }
 
     public PetShopResponseDTO toDTOResposta(PetShop petShop) {
