@@ -14,24 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "TB_DONO")
-public class Dono {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private String nome;
+public class Dono extends Usuario {
 
     private String cpf;
 
     private String rg;
-
-    private String email;
-
-    private String senha;
-
-    @Embedded
-    private Endereco endereco;
 
     @OneToMany(mappedBy = "dono", cascade = CascadeType.REMOVE)
     private List<Pet> listaPet;
