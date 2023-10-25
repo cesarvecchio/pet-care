@@ -4,7 +4,7 @@ import br.com.petcare.application.response.DonoResponseDTO;
 
 import java.time.LocalDate;
 
-public record PetDTO(
+public record PetRequestDTO(
          Integer id,
          String nome,
          LocalDate dataNascimento,

@@ -29,8 +29,8 @@ public class DonoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DonoResponseDTO> atualizar(@PathVariable Integer id, @RequestBody DonoResponseDTO donoResponseDTO) {
-        return ResponseEntity.ok(donoService.atualizar(id, donoResponseDTO));
+    public ResponseEntity<DonoResponseDTO> atualizar(@PathVariable Integer id, @RequestBody DonoRequestDTO donoRequestDTO) {
+        return ResponseEntity.ok(donoService.atualizar(id, donoRequestDTO));
     }
 
     @DeleteMapping("/{id}")

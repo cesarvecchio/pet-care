@@ -8,6 +8,6 @@ public record AgendamentoRequestDTO(
         Integer status,
         DonoRequestDTO dono,
         PetShopRequestDTO petShop,
-        PetDTO pet
+        PetRequestDTO pet
 ) {
 }

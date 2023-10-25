@@ -30,10 +30,10 @@ public class DonoService {
         return this.toDto(donoRepository.save(dono));
     }
 
-    public DonoResponseDTO atualizar(Integer id, DonoResponseDTO donoResponseDTO) {
+    public DonoResponseDTO atualizar(Integer id, DonoRequestDTO donoRequestDTO) {
         Dono dono = buscaPorId(id);
 
-        utils.copyNonNullProperties(donoResponseDTO, dono);
+        utils.copyNonNullProperties(donoRequestDTO, dono);
 
         return this.toDto(donoRepository.save(dono));
     }

@@ -1,6 +1,6 @@
 package br.com.petcare.domain.service;
 
-import br.com.petcare.application.request.PetDTO;
+import br.com.petcare.application.request.PetRequestDTO;
 import br.com.petcare.domain.entity.Dono;
 import br.com.petcare.domain.entity.Pet;
 import br.com.petcare.domain.enums.EspecieEnum;
@@ -31,12 +31,12 @@ public class PetService {
         this.utils = utils;
     }
 
-    public Page<PetDTO> findAll(Pageable pageable) {
+    public Page<PetRequestDTO> findAll(Pageable pageable) {
         Page<Pet> pets = petRepository.findAll(pageable);
         return pets.map(this::toDTO);
     }
 
-    public PetDTO cadastrar(PetDTO petDTO, Integer idDono) {
+    public PetRequestDTO cadastrar(PetRequestDTO petDTO, Integer idDono) {
         Pet pet = toEntity(petDTO);
         pet.setDono(donoService.buscaPorId(idDono));
 
@@ -45,7 +45,7 @@ public class PetService {
         return petDTO;
     }
 
-    public PetDTO atualizar(Integer idDono, Integer idPet, PetDTO petDTO) {
+    public PetRequestDTO atualizar(Integer idDono, Integer idPet, PetRequestDTO petDTO) {
         Dono dono = donoService.buscaPorId(idDono);
 
         Pet pet = buscarPorId(idPet);
@@ -79,7 +79,7 @@ public class PetService {
                         String.format("Pet com o id '%d' não encontrado", idPet)));
     }
 
-    public Page<PetDTO> consultarPetsPorDono(Integer idDono, Pageable pageable) {
+    public Page<PetRequestDTO> consultarPetsPorDono(Integer idDono, Pageable pageable) {
         donoService.existePorId(idDono);
         Page<Pet> pets = petRepository.findAllByDonoId(idDono, pageable);
 
@@ -100,8 +100,8 @@ public class PetService {
         return petRepository.existsPetByIdAndDonoId(petId, donoId);
     }
 
-    public PetDTO toDTO(Pet pet) {
-        return new PetDTO(
+    public PetRequestDTO toDTO(Pet pet) {
+        return new PetRequestDTO(
                 pet.getId(),
                 pet.getNome(),
                 pet.getDataNascimento(),
@@ -120,7 +120,7 @@ public class PetService {
         );
     }
 
-    public Pet toEntity(PetDTO petDTO) {
+    public Pet toEntity(PetRequestDTO petDTO) {
         return Pet.builder()
                 .id(petDTO.id())
                 .nome(petDTO.nome())

@@ -1,6 +1,6 @@
 package br.com.petcare.application.controller;
 
-import br.com.petcare.application.request.PetDTO;
+import br.com.petcare.application.request.PetRequestDTO;
 import br.com.petcare.domain.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,18 +21,18 @@ public class PetController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PetDTO>> findAll(@PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
+    public ResponseEntity<Page<PetRequestDTO>> findAll(@PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
         return ResponseEntity.ok(petService.findAll(pageable));
     }
 
     @PostMapping("/{idDono}")
-    public ResponseEntity<PetDTO> cadastrar(@PathVariable Integer idDono, @RequestBody PetDTO petDTO) {
+    public ResponseEntity<PetRequestDTO> cadastrar(@PathVariable Integer idDono, @RequestBody PetRequestDTO petDTO) {
         return ResponseEntity.ok(petService.cadastrar(petDTO, idDono));
     }
 
     @PutMapping("/{idDono}/{idPet}")
-    public ResponseEntity<PetDTO> atualizar(@PathVariable Integer idDono, @PathVariable Integer idPet,
-                                               @RequestBody PetDTO petDTO) {
+    public ResponseEntity<PetRequestDTO> atualizar(@PathVariable Integer idDono, @PathVariable Integer idPet,
+                                                   @RequestBody PetRequestDTO petDTO) {
         return ResponseEntity.ok(petService.atualizar(idDono, idPet, petDTO));
     }
 
@@ -43,8 +43,8 @@ public class PetController {
     }
 
     @GetMapping("/dono/{idDono}")
-    public ResponseEntity<Page<PetDTO>> consultarPetsPorDono(@PathVariable Integer idDono,
-                                                          @PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
+    public ResponseEntity<Page<PetRequestDTO>> consultarPetsPorDono(@PathVariable Integer idDono,
+                                                                    @PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
         return ResponseEntity.ok(this.petService.consultarPetsPorDono(idDono, pageable));
     }
 
