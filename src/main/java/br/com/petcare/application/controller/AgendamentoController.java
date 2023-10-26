@@ -23,4 +23,10 @@ public class AgendamentoController {
                                                             @RequestBody AgendamentoRequestDTO agendamentoRequestDTO) {
         return ResponseEntity.ok(agendamentoService.cadastrar(idDono, idPetShop, idPet, agendamentoRequestDTO));
     }
+
+    @PutMapping("{idAgendamento}")
+    public ResponseEntity<AgendamentoResponseDTO> atualizar(@PathVariable Integer idAgendamento,
+                                                            @RequestBody AgendamentoRequestDTO agendamentoRequestDTO) {
+        return ResponseEntity.ok(agendamentoService.atualizar(idAgendamento, agendamentoRequestDTO));
+    }
 }
