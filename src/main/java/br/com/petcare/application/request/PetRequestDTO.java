@@ -10,10 +10,10 @@ public record PetRequestDTO(
          LocalDate dataNascimento,
          Double peso,
          Double tamanho,
-         String especie,
-         String raca,
-         String humor,
-         String genero,
+         Integer especie,
+         Integer raca,
+         Integer humor,
+         Integer genero,
          DonoResponseDTO dono
 ) {
 }

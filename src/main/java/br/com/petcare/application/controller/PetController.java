@@ -1,6 +1,7 @@
 package br.com.petcare.application.controller;
 
 import br.com.petcare.application.request.PetRequestDTO;
+import br.com.petcare.application.response.PetResponseDTO;
 import br.com.petcare.domain.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,17 +22,17 @@ public class PetController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PetRequestDTO>> findAll(@PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
+    public ResponseEntity<Page<PetResponseDTO>> findAll(@PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
         return ResponseEntity.ok(petService.findAll(pageable));
     }
 
     @PostMapping("/{idDono}")
-    public ResponseEntity<PetRequestDTO> cadastrar(@PathVariable Integer idDono, @RequestBody PetRequestDTO petDTO) {
+    public ResponseEntity<PetResponseDTO> cadastrar(@PathVariable Integer idDono, @RequestBody PetRequestDTO petDTO) {
         return ResponseEntity.ok(petService.cadastrar(petDTO, idDono));
     }
 
     @PutMapping("/{idDono}/{idPet}")
-    public ResponseEntity<PetRequestDTO> atualizar(@PathVariable Integer idDono, @PathVariable Integer idPet,
+    public ResponseEntity<PetResponseDTO> atualizar(@PathVariable Integer idDono, @PathVariable Integer idPet,
                                                    @RequestBody PetRequestDTO petDTO) {
         return ResponseEntity.ok(petService.atualizar(idDono, idPet, petDTO));
     }
@@ -43,7 +44,7 @@ public class PetController {
     }
 
     @GetMapping("/dono/{idDono}")
-    public ResponseEntity<Page<PetRequestDTO>> consultarPetsPorDono(@PathVariable Integer idDono,
+    public ResponseEntity<Page<PetResponseDTO>> consultarPetsPorDono(@PathVariable Integer idDono,
                                                                     @PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
         return ResponseEntity.ok(this.petService.consultarPetsPorDono(idDono, pageable));
     }

@@ -47,8 +47,9 @@ public class PetShopService {
 
     public PetShopResponseDTO atualizar(Integer idPetShop, PetShopRequestDTO petShopRequestDTO) {
         PetShop petShop = this.buscarPorId(idPetShop);
+        PetShop request = toEntity(petShopRequestDTO);
 
-        this.utils.copyNonNullProperties(petShopRequestDTO, petShop);
+        this.utils.copyNonNullProperties(request, petShop);
 
         return this.toDTOResposta(petShopRepository.save(petShop));
     }
