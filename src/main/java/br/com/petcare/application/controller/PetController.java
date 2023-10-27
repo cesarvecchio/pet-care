@@ -10,6 +10,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/pet")
 public class PetController {
@@ -22,8 +24,16 @@ public class PetController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PetResponseDTO>> findAll(@PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
-        return ResponseEntity.ok(petService.findAll(pageable));
+    public ResponseEntity<Page<PetResponseDTO>> findAll(@PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable,
+                                                        @RequestParam(required = false) String nome,
+                                                        @RequestParam(required = false) LocalDate dataNascimento,
+                                                        @RequestParam(required = false) Double peso,
+                                                        @RequestParam(required = false) Double tamanho,
+                                                        @RequestParam(required = false) Integer especie,
+                                                        @RequestParam(required = false) Integer raca,
+                                                        @RequestParam(required = false) Integer genero,
+                                                        @RequestParam(required = false) Integer humor) {
+        return ResponseEntity.ok(petService.findAll(pageable, nome, dataNascimento, peso, tamanho, especie, raca, genero, humor));
     }
 
     @PostMapping("/{idDono}")
@@ -33,7 +43,7 @@ public class PetController {
 
     @PutMapping("/{idDono}/{idPet}")
     public ResponseEntity<PetResponseDTO> atualizar(@PathVariable Integer idDono, @PathVariable Integer idPet,
-                                                   @RequestBody PetRequestDTO petDTO) {
+                                                    @RequestBody PetRequestDTO petDTO) {
         return ResponseEntity.ok(petService.atualizar(idDono, idPet, petDTO));
     }
 
@@ -45,7 +55,7 @@ public class PetController {
 
     @GetMapping("/dono/{idDono}")
     public ResponseEntity<Page<PetResponseDTO>> consultarPetsPorDono(@PathVariable Integer idDono,
-                                                                    @PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
+                                                                     @PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
         return ResponseEntity.ok(this.petService.consultarPetsPorDono(idDono, pageable));
     }
 

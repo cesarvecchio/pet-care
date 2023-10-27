@@ -1,6 +1,6 @@
 package br.com.petcare.application.request;
 
-import br.com.petcare.domain.entity.Endereco;
+import br.com.petcare.domain.valueObject.Endereco;
 
 public record DonoRequestDTO(
         Integer id,
@@ -9,7 +9,6 @@ public record DonoRequestDTO(
         String rg,
         String email,
         String senha,
-
         Endereco endereco
 ) {
 }

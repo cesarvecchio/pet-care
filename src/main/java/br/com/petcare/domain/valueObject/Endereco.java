@@ -1,4 +1,4 @@
-package br.com.petcare.domain.entity;
+package br.com.petcare.domain.valueObject;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,15 +1,16 @@
 package br.com.petcare.application.request;
 
-import br.com.petcare.domain.entity.Endereco;
+import br.com.petcare.domain.valueObject.Endereco;
 
 import java.util.List;
 
 public record PetShopRequestDTO(
         Integer id,
         String nome,
-        String cpf,
+        String email,
+        String senha,
         String cnpj,
-        List<String> listaFuncionarios,
+        List<FuncionarioRequestDTO> funcionarios,
         Integer tipoServico,
         Endereco endereco
 ) {

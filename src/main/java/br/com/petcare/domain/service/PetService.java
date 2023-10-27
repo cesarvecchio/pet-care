@@ -11,12 +11,15 @@ import br.com.petcare.domain.enums.RacaEnum;
 import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
 import br.com.petcare.application.controller.exceptions.PetNaoPertenceAoDonoException;
 import br.com.petcare.infra.repository.PetRepository;
-import br.com.petcare.infra.utils.Utils;
+import br.com.petcare.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+
+import java.time.LocalDate;
 
 @Service
 public class PetService {
@@ -32,16 +35,29 @@ public class PetService {
         this.utils = utils;
     }
 
-    public Page<PetResponseDTO> findAll(Pageable pageable) {
-        Page<Pet> pets = petRepository.findAll(pageable);
-        return pets.map(this::toDTOResponse);
+    public Page<PetResponseDTO> findAll(Pageable pageable, String nome, LocalDate dataNascimento, Double peso, Double tamanho, Integer especie, Integer raca, Integer genero, Integer humor) {
+
+        Example<Pet> example = Example.of(Pet.builder()
+                .nome(nome)
+                .dataNascimento(dataNascimento)
+                .peso(peso)
+                .tamanho(tamanho)
+                .especie(EspecieEnum.recuperarEspecie(especie))
+                .raca(RacaEnum.recuperarRaca(raca))
+                .genero(GeneroEnum.recuperarGenero(genero))
+                .humor(HumorEnum.recuperarHumor(humor))
+                .build()
+        );
+
+        Page<Pet> pets = petRepository.findAll(example, pageable);
+        return pets.map(this::toResponseDTO);
     }
 
     public PetResponseDTO cadastrar(PetRequestDTO petDTO, Integer idDono) {
         Pet pet = toEntity(petDTO);
         pet.setDono(donoService.buscaPorId(idDono));
 
-        return toDTOResponse(petRepository.save(pet));
+        return toResponseDTO(petRepository.save(pet));
     }
 
     public PetResponseDTO atualizar(Integer idDono, Integer idPet, PetRequestDTO petDTO) {
@@ -57,7 +73,7 @@ public class PetService {
 
         utils.copyNonNullProperties(request, pet);
 
-        return toDTOResponse(petRepository.save(pet));
+        return toResponseDTO(petRepository.save(pet));
     }
 
     public void deletar(Integer idDono, Integer idPet) {
@@ -83,7 +99,7 @@ public class PetService {
         donoService.existePorId(idDono);
         Page<Pet> pets = petRepository.findAllByDonoId(idDono, pageable);
 
-        return pets.map(this::toDTOResponse);
+        return pets.map(this::toResponseDTO);
     }
 
     public void existePorId(Integer idPet) {
@@ -100,7 +116,7 @@ public class PetService {
         return petRepository.existsPetByIdAndDonoId(petId, donoId);
     }
 
-    public PetResponseDTO toDTOResponse(Pet pet) {
+    public PetResponseDTO toResponseDTO(Pet pet) {
         return new PetResponseDTO(
                 pet.getId(),
                 pet.getNome(),
@@ -120,7 +136,7 @@ public class PetService {
         );
     }
 
-    public PetRequestDTO toDTO(Pet pet) {
+    public PetRequestDTO toRequestDTO(Pet pet) {
         return new PetRequestDTO(
                 pet.getId(),
                 pet.getNome(),

@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Getter
 @Setter
 @SuperBuilder
@@ -26,7 +24,6 @@ public class Funcionario {
 
     private String rg;
 
-
-    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.REMOVE)
-    private List<PetShop> listaPetShop;
+    @ManyToOne
+    private PetShop petShop;
 }
