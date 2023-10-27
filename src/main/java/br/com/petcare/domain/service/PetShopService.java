@@ -1,48 +1,58 @@
 package br.com.petcare.domain.service;
 
 import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
+import br.com.petcare.application.request.FuncionarioRequestDTO;
 import br.com.petcare.application.request.PetShopRequestDTO;
+import br.com.petcare.application.response.FuncionarioResponseDTO;
 import br.com.petcare.application.response.PetShopResponseDTO;
+import br.com.petcare.domain.valueObject.Endereco;
+import br.com.petcare.domain.entity.Funcionario;
 import br.com.petcare.domain.entity.PetShop;
 import br.com.petcare.domain.enums.TipoServicoEnum;
 import br.com.petcare.infra.repository.PetShopRepository;
-import br.com.petcare.infra.utils.Utils;
+import br.com.petcare.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+
+import java.util.List;
+
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 public class PetShopService {
     private final PetShopRepository petShopRepository;
+    private final FuncionarioService funcionarioService;
     private final Utils utils;
 
     @Autowired
-    public PetShopService(PetShopRepository petShopRepository, Utils utils) {
+    public PetShopService(PetShopRepository petShopRepository, FuncionarioService funcionarioService, Utils utils) {
         this.petShopRepository = petShopRepository;
+        this.funcionarioService = funcionarioService;
         this.utils = utils;
     }
 
-    public Page<PetShopResponseDTO> buscarTodos(Pageable pageable, String nome, String cpf, String cnpj,
-                                                Integer tipoServico) {
+    public Page<PetShopResponseDTO> buscarTodos(Pageable pageable, String nome, String cnpj,
+                                                Integer tipoServico, Endereco endereco) {
+
         Example<PetShop> example = Example.of(PetShop.builder()
-                        .nome(nome)
-                        .cpf(cpf)
-                        .cnpj(cnpj)
-                        .tipoServico(TipoServicoEnum.recuperarServico(tipoServico))
-                        .build());
+                .nome(nome)
+                .cnpj(cnpj)
+                .tipoServico(TipoServicoEnum.recuperarServico(tipoServico))
+                .endereco(endereco)
+                .build());
 
         Page<PetShop> prestadorServicoPage = petShopRepository.findAll(example, pageable);
 
-        return prestadorServicoPage.map(this::toDTOResposta);
+        return prestadorServicoPage.map(this::toResponseDTO);
     }
 
     public PetShopResponseDTO cadastrar(PetShopRequestDTO petShopDTO) {
         PetShop petShop = toEntity(petShopDTO);
 
-        return toDTOResposta(petShopRepository.save(petShop));
+        return toResponseDTO(petShopRepository.save(petShop));
     }
 
     public PetShopResponseDTO atualizar(Integer idPetShop, PetShopRequestDTO petShopRequestDTO) {
@@ -51,7 +61,7 @@ public class PetShopService {
 
         this.utils.copyNonNullProperties(request, petShop);
 
-        return this.toDTOResposta(petShopRepository.save(petShop));
+        return this.toResponseDTO(petShopRepository.save(petShop));
     }
 
     public void deletar(Integer idPetShop) {
@@ -72,27 +82,27 @@ public class PetShopService {
                     String.format("Pet Shop com o id '%d' não encontrado", idPetShop));
     }
 
-    public PetShopResponseDTO toDTOResposta(PetShop petShop) {
+    public PetShopResponseDTO toResponseDTO(PetShop petShop) {
         return new PetShopResponseDTO(
                 petShop.getId(),
                 petShop.getNome(),
-                petShop.getCpf(),
                 petShop.getCnpj(),
-                petShop.getListaFuncionarios(),
-                ObjectUtils.isEmpty(petShop.getTipoServico())
+                isEmpty(petShop.getFuncionarios()) ? null : getListOfResponseDTOFuncionarios(petShop.getFuncionarios()),
+                isEmpty(petShop.getTipoServico())
                         ? null : petShop.getTipoServico().getDescricao(),
                 petShop.getEndereco()
         );
     }
 
-    public PetShopRequestDTO toDTO(PetShop petShop) {
+    public PetShopRequestDTO toRequestDTO(PetShop petShop) {
         return new PetShopRequestDTO(
                 petShop.getId(),
                 petShop.getNome(),
-                petShop.getCpf(),
+                petShop.getEmail(),
+                petShop.getSenha(),
                 petShop.getCnpj(),
-                petShop.getListaFuncionarios(),
-                ObjectUtils.isEmpty(petShop.getTipoServico())
+                isEmpty(petShop.getFuncionarios()) ? null : getListOfRequestDTOFuncionarios(petShop.getFuncionarios()),
+                isEmpty(petShop.getTipoServico())
                         ? null : petShop.getTipoServico().getId(),
                 petShop.getEndereco()
         );
@@ -102,12 +112,25 @@ public class PetShopService {
         return PetShop.builder()
                 .id(dto.id())
                 .nome(dto.nome())
-                .cpf(dto.cpf())
+                .email(dto.email())
+                .senha(dto.senha())
                 .cnpj(dto.cnpj())
-                .listaFuncionarios(dto.listaFuncionarios())
-                .tipoServico(ObjectUtils.isEmpty(dto.tipoServico())
+                .funcionarios(getListOfFuncionarios(dto.funcionarios()))
+                .tipoServico(isEmpty(dto.tipoServico())
                         ? null : TipoServicoEnum.recuperarServico(dto.tipoServico()))
                 .endereco(dto.endereco())
                 .build();
+    }
+
+    private List<FuncionarioResponseDTO> getListOfResponseDTOFuncionarios(List<Funcionario> funcionarios) {
+        return funcionarios.stream().map(this.funcionarioService::toResponseDTO).toList();
+    }
+
+    private List<FuncionarioRequestDTO> getListOfRequestDTOFuncionarios(List<Funcionario> funcionarios) {
+        return funcionarios.stream().map(this.funcionarioService::toRequestDTO).toList();
+    }
+
+    private List<Funcionario> getListOfFuncionarios(List<FuncionarioRequestDTO> funcionariosDTO) {
+        return funcionariosDTO.stream().map(this.funcionarioService::toEntity).toList();
     }
 }

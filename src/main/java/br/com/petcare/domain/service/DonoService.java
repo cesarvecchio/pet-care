@@ -6,7 +6,7 @@ import br.com.petcare.domain.entity.Dono;
 import br.com.petcare.application.controller.exceptions.CpfException;
 import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
 import br.com.petcare.infra.repository.DonoRepository;
-import br.com.petcare.infra.utils.Utils;
+import br.com.petcare.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +66,8 @@ public class DonoService {
                 dono.getId(),
                 dono.getNome(),
                 dono.getCpf(),
-                dono.getRg()
+                dono.getRg(),
+                dono.getEndereco()
         );
     }
 

@@ -6,7 +6,7 @@ import br.com.petcare.application.request.FuncionarioRequestDTO;
 import br.com.petcare.application.response.FuncionarioResponseDTO;
 import br.com.petcare.domain.entity.Funcionario;
 import br.com.petcare.infra.repository.FuncionarioRepository;
-import br.com.petcare.infra.utils.Utils;
+import br.com.petcare.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class FuncionarioService {
         if (this.cpfExistente(funcionarioDTO.cpf()))
             throw new CpfException("Esse cpf já está sendo utilizado");
 
-        return this.toDto(funcionarioRepository.save(funcionario));
+        return this.toResponseDTO(funcionarioRepository.save(funcionario));
     }
 
     public FuncionarioResponseDTO atualizar(Integer id, FuncionarioResponseDTO funcionarioResponseDTO) {
@@ -35,7 +35,7 @@ public class FuncionarioService {
 
         utils.copyNonNullProperties(funcionarioResponseDTO, funcionario);
 
-        return this.toDto(funcionarioRepository.save(funcionario));
+        return this.toResponseDTO(funcionarioRepository.save(funcionario));
     }
 
     public void deletar(Integer id) {
@@ -61,8 +61,17 @@ public class FuncionarioService {
 
     }
 
-    public FuncionarioResponseDTO toDto(Funcionario funcionario) {
+    public FuncionarioResponseDTO toResponseDTO(Funcionario funcionario) {
         return new FuncionarioResponseDTO(
+                funcionario.getId(),
+                funcionario.getNome(),
+                funcionario.getCpf(),
+                funcionario.getRg()
+        );
+    }
+
+    public FuncionarioRequestDTO toRequestDTO(Funcionario funcionario) {
+        return new FuncionarioRequestDTO(
                 funcionario.getId(),
                 funcionario.getNome(),
                 funcionario.getCpf(),

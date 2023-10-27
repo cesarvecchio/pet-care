@@ -25,7 +25,7 @@ public class FuncionarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioResponseDTO> consultarPorId(@PathVariable Integer id) {
-        return ResponseEntity.ok(this.funcionarioService.toDto(funcionarioService.buscaPorId(id)));
+        return ResponseEntity.ok(this.funcionarioService.toResponseDTO(funcionarioService.buscaPorId(id)));
     }
 
     @PutMapping("/{id}")

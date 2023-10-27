@@ -6,7 +6,7 @@ import br.com.petcare.application.response.AgendamentoResponseDTO;
 import br.com.petcare.domain.entity.Agendamento;
 import br.com.petcare.domain.enums.StatusEnum;
 import br.com.petcare.infra.repository.AgendamentoRepository;
-import br.com.petcare.infra.utils.Utils;
+import br.com.petcare.utils.Utils;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -67,8 +67,8 @@ public class AgendamentoService {
                 agendamento.getObservacao(),
                 isEmpty(agendamento.getStatus()) ? null : agendamento.getStatus().getDescricao(),
                 isEmpty(agendamento.getDono()) ? null : donoService.toDto(agendamento.getDono()),
-                isEmpty(agendamento.getPetShop()) ? null : petShopService.toDTOResposta(agendamento.getPetShop()),
-                isEmpty(agendamento.getPetShop()) ? null : petService.toDTO(agendamento.getPet())
+                isEmpty(agendamento.getPetShop()) ? null : petShopService.toResponseDTO(agendamento.getPetShop()),
+                isEmpty(agendamento.getPetShop()) ? null : petService.toResponseDTO(agendamento.getPet())
         );
     }
 

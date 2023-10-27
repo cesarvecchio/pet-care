@@ -2,6 +2,7 @@ package br.com.petcare.domain.entity;
 
 import br.com.petcare.domain.enums.TipoServicoEnum;
 import br.com.petcare.domain.enums.converter.TipoServicoEnumConverter;
+import br.com.petcare.domain.valueObject.Endereco;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,22 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "TB_PET_SHOP")
-public class PetShop {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private String nome;
-
-    private String cpf;
+public class PetShop extends Usuario {
 
     private String cnpj;
 
-    @Embedded
-    private Endereco endereco;
-
-    @ElementCollection
-    private List<String> listaFuncionarios;
+    @OneToMany(mappedBy = "petShop", cascade = CascadeType.REMOVE)
+    private List<Funcionario> funcionarios;
 
     @Convert(converter = TipoServicoEnumConverter.class)
     private TipoServicoEnum tipoServico;

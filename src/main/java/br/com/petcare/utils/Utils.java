@@ -1,4 +1,4 @@
-package br.com.petcare.infra.utils;
+package br.com.petcare.utils;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
