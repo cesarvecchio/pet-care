@@ -7,8 +7,11 @@ import br.com.petcare.domain.entity.Agendamento;
 import br.com.petcare.domain.enums.StatusEnum;
 import br.com.petcare.infra.repository.AgendamentoRepository;
 import br.com.petcare.utils.Utils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.nonNull;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
@@ -28,11 +31,23 @@ public class AgendamentoService {
         this.utils = utils;
     }
 
-    public AgendamentoResponseDTO cadastrar(Integer idDono, Integer idPetShop, Integer idPet, AgendamentoRequestDTO agendamentoRequestDTO) {
+    public Page<AgendamentoResponseDTO> buscarTodos(Pageable pageable, Integer idDono, Integer idPet, Integer idPetShop) {
+        if (nonNull(idDono)) {
+            return agendamentoRepository.findAllByDonoId(idDono, pageable).map(this::toResponseDTO);
+        } else if (nonNull(idPet)) {
+            return agendamentoRepository.findAllByPetId(idPet, pageable).map(this::toResponseDTO);
+        } else if (nonNull(idPetShop)) {
+            return agendamentoRepository.findAllByPetShopId(idPetShop, pageable).map(this::toResponseDTO);
+        }
+
+        throw new NaoEncontradoException("É necessário informar pelo menos um parâmetro de busca (Dono, Pet ou PetShop))");
+    }
+
+    public AgendamentoResponseDTO cadastrar(Integer idPetShop, Integer idPet, AgendamentoRequestDTO agendamentoRequestDTO) {
         Agendamento agendamento = toEntity(agendamentoRequestDTO);
-        agendamento.setDono(donoService.buscaPorId(idDono));
-        agendamento.setPetShop(petShopService.buscarPorId(idPetShop));
         agendamento.setPet(petService.buscarPorId(idPet));
+        agendamento.setDono(donoService.buscaPorId(agendamento.getPet().getDono().getId()));
+        agendamento.setPetShop(petShopService.buscarPorId(idPetShop));
 
         return toResponseDTO(agendamentoRepository.save(agendamento));
     }
@@ -45,11 +60,13 @@ public class AgendamentoService {
 
         return toResponseDTO(agendamentoRepository.save(agendamento));
     }
+
     public Agendamento buscarPorId(Integer idAgendamento) {
         return agendamentoRepository.findById(idAgendamento)
                 .orElseThrow(() -> new NaoEncontradoException(
                         String.format("Agendamento com o id '%d' não encontrado", idAgendamento)));
     }
+
     public Agendamento toEntity(AgendamentoRequestDTO agendamentoDTO) {
         return Agendamento.builder()
                 .dataAgendamento(agendamentoDTO.dataAgendamento())
@@ -63,6 +80,7 @@ public class AgendamentoService {
 
     public AgendamentoResponseDTO toResponseDTO(Agendamento agendamento) {
         return new AgendamentoResponseDTO(
+                agendamento.getId(),
                 agendamento.getDataAgendamento(),
                 agendamento.getObservacao(),
                 isEmpty(agendamento.getStatus()) ? null : agendamento.getStatus().getDescricao(),
