@@ -3,6 +3,8 @@ package br.com.petcare.domain.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum GeneroEnum {
@@ -13,16 +15,14 @@ public enum GeneroEnum {
     private final String descricao;
 
     public static GeneroEnum recuperarGenero(String descricao) {
-        for (GeneroEnum value : values()) {
-            if(value.getDescricao().equals(descricao)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getDescricao().equals(descricao))
+                .findFirst()
+                .orElse(null);
     }
 
     public static GeneroEnum recuperarGenero(Integer id) {
-        for (GeneroEnum value : values()) {
-            if(value.getId().equals(id)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

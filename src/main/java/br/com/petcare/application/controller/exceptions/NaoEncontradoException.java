@@ -1,6 +1,6 @@
 package br.com.petcare.application.controller.exceptions;
 
-public class NaoEncontradoException extends RuntimeException{
+public class NaoEncontradoException extends RuntimeException {
     public NaoEncontradoException(String message) {
         super(message);
     }

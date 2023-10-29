@@ -2,9 +2,8 @@ package br.com.petcare.application.controller;
 
 import br.com.petcare.application.request.PetShopRequestDTO;
 import br.com.petcare.application.response.PetShopResponseDTO;
-import br.com.petcare.domain.valueObject.Endereco;
 import br.com.petcare.domain.service.PetShopService;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.petcare.domain.valueObject.Endereco;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class PetShopController {
     private final PetShopService petShopService;
 
-    @Autowired
     public PetShopController(PetShopService petShopService) {
         this.petShopService = petShopService;
     }

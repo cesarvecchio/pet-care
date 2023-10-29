@@ -1,6 +1,6 @@
 package br.com.petcare.domain.valueObject;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

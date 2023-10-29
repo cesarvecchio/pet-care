@@ -3,6 +3,8 @@ package br.com.petcare.domain.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum HumorEnum {
@@ -14,16 +16,14 @@ public enum HumorEnum {
     private final String descricao;
 
     public static HumorEnum recuperarHumor(String descricao) {
-        for (HumorEnum value : values()) {
-            if(value.getDescricao().equals(descricao)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getDescricao().equals(descricao))
+                .findFirst()
+                .orElse(null);
     }
 
     public static HumorEnum recuperarHumor(Integer id) {
-        for (HumorEnum value : values()) {
-            if(value.getId().equals(id)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

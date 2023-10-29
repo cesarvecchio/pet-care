@@ -7,7 +7,6 @@ import br.com.petcare.application.response.FuncionarioResponseDTO;
 import br.com.petcare.domain.entity.Funcionario;
 import br.com.petcare.infra.repository.FuncionarioRepository;
 import br.com.petcare.utils.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,19 +14,18 @@ public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
     private final Utils utils;
 
-    @Autowired
     public FuncionarioService(FuncionarioRepository funcionarioRepository, Utils utils) {
         this.funcionarioRepository = funcionarioRepository;
         this.utils = utils;
     }
 
     public FuncionarioResponseDTO cadastrar(FuncionarioRequestDTO funcionarioDTO) {
-        Funcionario funcionario = this.toEntity(funcionarioDTO);
+        Funcionario funcionario = toEntity(funcionarioDTO);
 
-        if (this.cpfExistente(funcionarioDTO.cpf()))
+        if (cpfExistente(funcionarioDTO.cpf()))
             throw new CpfException("Esse cpf já está sendo utilizado");
 
-        return this.toResponseDTO(funcionarioRepository.save(funcionario));
+        return toResponseDTO(funcionarioRepository.save(funcionario));
     }
 
     public FuncionarioResponseDTO atualizar(Integer id, FuncionarioResponseDTO funcionarioResponseDTO) {
@@ -35,27 +33,27 @@ public class FuncionarioService {
 
         utils.copyNonNullProperties(funcionarioResponseDTO, funcionario);
 
-        return this.toResponseDTO(funcionarioRepository.save(funcionario));
+        return toResponseDTO(funcionarioRepository.save(funcionario));
     }
 
     public void deletar(Integer id) {
-        this.existePorId(id);
+        existePorId(id);
 
-        this.funcionarioRepository.deleteById(id);
+        funcionarioRepository.deleteById(id);
     }
 
     public Funcionario buscaPorId(Integer idFuncionario) {
-        return this.funcionarioRepository.findById(idFuncionario)
+        return funcionarioRepository.findById(idFuncionario)
                 .orElseThrow(() -> new NaoEncontradoException(
                         String.format("Funcionário com o id '%d' não encontrado", idFuncionario)));
     }
 
-    public boolean cpfExistente(String cpf) {
+    private boolean cpfExistente(String cpf) {
         return funcionarioRepository.existsByCpf(cpf);
     }
 
-    public void existePorId(Integer idFuncionario){
-        if(!this.funcionarioRepository.existsById(idFuncionario))
+    private void existePorId(Integer idFuncionario) {
+        if (!funcionarioRepository.existsById(idFuncionario))
             throw new NaoEncontradoException(
                     String.format("Funcionário com o id '%d' não encontrado", idFuncionario));
 
@@ -68,24 +66,6 @@ public class FuncionarioService {
                 funcionario.getCpf(),
                 funcionario.getRg()
         );
-    }
-
-    public FuncionarioRequestDTO toRequestDTO(Funcionario funcionario) {
-        return new FuncionarioRequestDTO(
-                funcionario.getId(),
-                funcionario.getNome(),
-                funcionario.getCpf(),
-                funcionario.getRg()
-        );
-    }
-
-    public Funcionario toEntity(FuncionarioResponseDTO funcionarioResponseDTO) {
-        return Funcionario.builder()
-                .id(funcionarioResponseDTO.id())
-                .nome(funcionarioResponseDTO.nome())
-                .cpf(funcionarioResponseDTO.cpf())
-                .rg(funcionarioResponseDTO.rg())
-                .build();
     }
 
     public Funcionario toEntity(FuncionarioRequestDTO funcionarioDTO) {

@@ -14,6 +14,6 @@ public record PetRequestDTO(
          Integer raca,
          Integer humor,
          Integer genero,
-         DonoResponseDTO dono
+         DonoRequestDTO dono
 ) {
 }

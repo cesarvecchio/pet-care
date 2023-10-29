@@ -3,6 +3,8 @@ package br.com.petcare.domain.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum RacaEnum {
@@ -32,17 +34,15 @@ public enum RacaEnum {
 
 
     public static RacaEnum recuperarRaca(String descricao) {
-        for (RacaEnum value : values()) {
-            if(value.getDescricao().equals(descricao)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getDescricao().equals(descricao))
+                .findFirst()
+                .orElse(null);
     }
 
     public static RacaEnum recuperarRaca(Integer id) {
-        for (RacaEnum value : values()) {
-            if(value.getId().equals(id)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
 }

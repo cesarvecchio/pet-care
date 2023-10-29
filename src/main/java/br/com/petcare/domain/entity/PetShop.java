@@ -2,7 +2,6 @@ package br.com.petcare.domain.entity;
 
 import br.com.petcare.domain.enums.TipoServicoEnum;
 import br.com.petcare.domain.enums.converter.TipoServicoEnumConverter;
-import br.com.petcare.domain.valueObject.Endereco;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

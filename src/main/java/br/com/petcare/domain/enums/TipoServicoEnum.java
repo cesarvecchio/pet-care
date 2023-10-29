@@ -2,6 +2,8 @@ package br.com.petcare.domain.enums;
 
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 public enum TipoServicoEnum {
     BANHO_TOSA(1, "Banho e tosa"),
@@ -20,16 +22,14 @@ public enum TipoServicoEnum {
     }
 
     public static TipoServicoEnum recuperarServico(String descricao) {
-        for (TipoServicoEnum value : values()) {
-            if(value.getDescricao().equals(descricao)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getDescricao().equals(descricao))
+                .findFirst()
+                .orElse(null);
     }
 
     public static TipoServicoEnum recuperarServico(Integer id) {
-        for (TipoServicoEnum value : values()) {
-            if(value.getId().equals(id)) return value;
-        }
-        return null;
+        return Arrays.stream(values()).filter(value -> value.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

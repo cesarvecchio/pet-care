@@ -3,7 +3,6 @@ package br.com.petcare.application.controller;
 import br.com.petcare.application.request.DonoRequestDTO;
 import br.com.petcare.application.response.DonoResponseDTO;
 import br.com.petcare.domain.service.DonoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,6 @@ public class DonoController {
 
     private final DonoService donoService;
 
-    @Autowired
     public DonoController(DonoService donoService) {
         this.donoService = donoService;
     }
@@ -25,7 +23,7 @@ public class DonoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DonoResponseDTO> consultarPorId(@PathVariable Integer id) {
-        return ResponseEntity.ok(this.donoService.toDto(donoService.buscaPorId(id)));
+        return ResponseEntity.ok(donoService.toResponseDto(donoService.buscaPorId(id)));
     }
 
     @PutMapping("/{id}")
@@ -35,7 +33,7 @@ public class DonoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
-        this.donoService.deletar(id);
+        donoService.deletar(id);
 
         return ResponseEntity.noContent().build();
     }

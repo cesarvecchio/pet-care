@@ -1,5 +1,7 @@
 package br.com.petcare.domain.service;
 
+import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
+import br.com.petcare.application.controller.exceptions.PetNaoPertenceAoDonoException;
 import br.com.petcare.application.request.PetRequestDTO;
 import br.com.petcare.application.response.PetResponseDTO;
 import br.com.petcare.domain.entity.Dono;
@@ -8,11 +10,8 @@ import br.com.petcare.domain.enums.EspecieEnum;
 import br.com.petcare.domain.enums.GeneroEnum;
 import br.com.petcare.domain.enums.HumorEnum;
 import br.com.petcare.domain.enums.RacaEnum;
-import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
-import br.com.petcare.application.controller.exceptions.PetNaoPertenceAoDonoException;
 import br.com.petcare.infra.repository.PetRepository;
 import br.com.petcare.utils.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +20,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 
+import static org.springframework.util.ObjectUtils.isEmpty;
+
 @Service
 public class PetService {
 
@@ -28,15 +29,21 @@ public class PetService {
     private final DonoService donoService;
     private final Utils utils;
 
-    @Autowired
     public PetService(PetRepository petRepository, DonoService donoService, Utils utils) {
         this.petRepository = petRepository;
         this.donoService = donoService;
         this.utils = utils;
     }
 
-    public Page<PetResponseDTO> findAll(Pageable pageable, String nome, LocalDate dataNascimento, Double peso, Double tamanho, Integer especie, Integer raca, Integer genero, Integer humor) {
-
+    public Page<PetResponseDTO> findAll(Pageable pageable,
+                                        String nome,
+                                        LocalDate dataNascimento,
+                                        Double peso,
+                                        Double tamanho,
+                                        Integer especie,
+                                        Integer raca,
+                                        Integer genero,
+                                        Integer humor) {
         Example<Pet> example = Example.of(Pet.builder()
                 .nome(nome)
                 .dataNascimento(dataNascimento)
@@ -66,7 +73,7 @@ public class PetService {
 
         Pet pet = buscarPorId(idPet);
 
-        if(!petPertenceAoDono(pet, dono))
+        if (!petPertenceAoDono(pet, dono))
             throw new PetNaoPertenceAoDonoException(
                     String.format("O pet com o id '%d' não pertence ao dono com id '%d'!",
                             idPet, idDono));
@@ -80,7 +87,7 @@ public class PetService {
         donoService.existePorId(idDono);
         existePorId(idPet);
 
-        if(!petPertenceAoDono(idPet, idDono))
+        if (!petPertenceAoDono(idPet, idDono))
             throw new PetNaoPertenceAoDonoException(
                     String.format("O pet com o id '%d' não pertence ao dono com id '%d'!",
                             idPet, idDono));
@@ -103,7 +110,7 @@ public class PetService {
     }
 
     public void existePorId(Integer idPet) {
-        if(!petRepository.existsById(idPet))
+        if (!petRepository.existsById(idPet))
             throw new NaoEncontradoException(
                     String.format("Pet com o id '%d' não encontrado", idPet));
     }
@@ -123,36 +130,11 @@ public class PetService {
                 pet.getDataNascimento(),
                 pet.getPeso(),
                 pet.getTamanho(),
-                ObjectUtils.isEmpty(pet.getEspecie())
-                        ? null : pet.getEspecie().getDescricao() ,
-                ObjectUtils.isEmpty(pet.getRaca())
-                        ? null : pet.getRaca().getDescricao(),
-                ObjectUtils.isEmpty(pet.getHumor())
-                        ? null : pet.getHumor().getDescricao(),
-                ObjectUtils.isEmpty(pet.getGenero())
-                        ? null : pet.getGenero().getDescricao(),
-                ObjectUtils.isEmpty(pet.getDono())
-                        ? null : donoService.toDto(pet.getDono())
-        );
-    }
-
-    public PetRequestDTO toRequestDTO(Pet pet) {
-        return new PetRequestDTO(
-                pet.getId(),
-                pet.getNome(),
-                pet.getDataNascimento(),
-                pet.getPeso(),
-                pet.getTamanho(),
-                ObjectUtils.isEmpty(pet.getEspecie())
-                        ? null : pet.getEspecie().getId() ,
-                ObjectUtils.isEmpty(pet.getRaca())
-                        ? null : pet.getRaca().getId(),
-                ObjectUtils.isEmpty(pet.getHumor())
-                        ? null : pet.getHumor().getId(),
-                ObjectUtils.isEmpty(pet.getGenero())
-                        ? null : pet.getGenero().getId(),
-                ObjectUtils.isEmpty(pet.getDono())
-                        ? null : donoService.toDto(pet.getDono())
+                isEmpty(pet.getEspecie()) ? null : pet.getEspecie().getDescricao(),
+                isEmpty(pet.getRaca()) ? null : pet.getRaca().getDescricao(),
+                isEmpty(pet.getHumor()) ? null : pet.getHumor().getDescricao(),
+                isEmpty(pet.getGenero()) ? null : pet.getGenero().getDescricao(),
+                isEmpty(pet.getDono()) ? null : donoService.toResponseDto(pet.getDono())
         );
     }
 
@@ -163,21 +145,11 @@ public class PetService {
                 .dataNascimento(petDTO.dataNascimento())
                 .peso(petDTO.peso())
                 .tamanho(petDTO.tamanho())
-
-                .especie(ObjectUtils.isEmpty(petDTO.especie())
-                        ? null : EspecieEnum.recuperarEspecie(petDTO.especie()))
-
-                .raca(ObjectUtils.isEmpty(petDTO.raca())
-                        ? null : RacaEnum.recuperarRaca(petDTO.raca()))
-
-                .humor(ObjectUtils.isEmpty(petDTO.humor())
-                        ? null : HumorEnum.recuperarHumor(petDTO.humor()))
-
-                .genero(ObjectUtils.isEmpty(petDTO.genero())
-                        ? null : GeneroEnum.recuperarGenero(petDTO.genero()))
-
-                .dono(ObjectUtils.isEmpty(petDTO.dono())
-                        ? null : donoService.toEntity(petDTO.dono()))
+                .especie(isEmpty(petDTO.especie()) ? null : EspecieEnum.recuperarEspecie(petDTO.especie()))
+                .raca(isEmpty(petDTO.raca()) ? null : RacaEnum.recuperarRaca(petDTO.raca()))
+                .humor(isEmpty(petDTO.humor()) ? null : HumorEnum.recuperarHumor(petDTO.humor()))
+                .genero(isEmpty(petDTO.genero()) ? null : GeneroEnum.recuperarGenero(petDTO.genero()))
+                .dono(isEmpty(petDTO.dono()) ? null : donoService.toEntity(petDTO.dono()))
                 .build();
     }
 }

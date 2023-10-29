@@ -10,16 +10,16 @@ import java.util.Set;
 
 @Component
 public class Utils {
-    public void copyNonNullProperties(Object source, Object destination){
+    public void copyNonNullProperties(Object source, Object destination) {
         BeanUtils.copyProperties(source, destination,
                 getNullPropertyNames(source));
     }
 
-    private String[] getNullPropertyNames (Object source) {
+    private String[] getNullPropertyNames(Object source) {
         final BeanWrapper src = new BeanWrapperImpl(source);
         java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
         Set emptyNames = new HashSet();
-        for(java.beans.PropertyDescriptor pd : pds) {
+        for (java.beans.PropertyDescriptor pd : pds) {
             //check if value of this property is null then add it to the collection
             Object srcValue = src.getPropertyValue(pd.getName());
             if (srcValue == null) emptyNames.add(pd.getName());

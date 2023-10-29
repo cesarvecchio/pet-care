@@ -12,7 +12,7 @@ import java.time.Instant;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(CpfException.class)
-    public ResponseEntity<StandardError> cpfException(CpfException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> cpfException(CpfException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         StandardError standardError = StandardError.builder()
@@ -27,7 +27,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(NaoEncontradoException.class)
-    public ResponseEntity<StandardError> naoEncontradoException(NaoEncontradoException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> naoEncontradoException(NaoEncontradoException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
         StandardError standardError = StandardError.builder()
@@ -42,7 +42,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(PetNaoPertenceAoDonoException.class)
-    public ResponseEntity<StandardError> petNaoPertenceDonoException(PetNaoPertenceAoDonoException e, HttpServletRequest request){
+    public ResponseEntity<StandardError> petNaoPertenceDonoException(PetNaoPertenceAoDonoException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
 
         StandardError standardError = StandardError.builder()
