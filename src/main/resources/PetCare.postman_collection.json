@@ -1,0 +1,446 @@
+{
+	"info": {
+		"_postman_id": "af250eb6-4b72-447b-a9b1-401887f3ef92",
+		"name": "PetCare",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15721724"
+	},
+	"item": [
+		{
+			"name": "Dono",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\" : \"Alberto Santana\",\r\n    \"cpf\" : \"20391203921\",\r\n    \"rg\" : \"1920492019\",\r\n    \"email\" : \"alberto@gmail.com\",\r\n    \"senha\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/dono",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"dono"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/dono/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"dono",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\" : \"César Alves Vecchio\",\r\n    \"cpf\" : \"20391203921\",\r\n    \"email\" : \"cesar@gmail.com\",\r\n    \"senha\" : \"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/dono/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"dono",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/dono/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"dono",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pet",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Luna\",\r\n    \"dataNascimento\": \"2011-01-01\",\r\n    \"peso\": 4.2,\r\n    \"tamanho\": 35.0,\r\n    \"especie\": \"Gato\",\r\n    \"raca\": \"Siamês\",\r\n    \"humor\": \"Dócil\",\r\n    \"genero\": \"Fêmea\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/pet/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/pet",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tamanho\": 30.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/pet/1/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet",
+								"1",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/pet/1/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar Pets Por Dono",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/pet/dono/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet",
+								"dono",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pet Shop",
+			"item": [
+				{
+					"name": "Consultar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/pet-shop",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet-shop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pet\",\r\n    \"cpf\": null,\r\n    \"cnpj\": null,\r\n    \"listaFuncionarios\": [\"Alberto\", \"Alfredo\"],\r\n    \"tipoServico\": \"Banho e tosa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/pet-shop",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet-shop"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Agendamento",
+			"item": [
+				{
+					"name": "AtualizarStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/agendamento/1?status=2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"agendamento",
+								"1"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reagendar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \r\n    \"dataAgendamento\": \"2025-01-01T13:13:00\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/agendamento/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"agendamento",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Banho e Tosa",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"servicosAdicionais\": \"Não cortar muito curto\",\r\n    \"cuidadosEspeciais\": \"\",\r\n    \"tipoBanhoTosa\": 2,\r\n    \"agendamento\" : {\r\n        \"dataAgendamento\": \"2021-01-01T13:13:00\",\r\n        \"status\": 1\r\n    }\r\n\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/banho-tosa/2/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"banho-tosa",
+								"2",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BuscarTodos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"observacao\": \"teste\",\r\n    \"status\": 1,\r\n    \"dataAgendamento\": \"2011-01-01T13:13:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/banho-tosa",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"banho-tosa"
+							],
+							"query": [
+								{
+									"key": "idDono",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "idPet",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "idPetShop",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "tipoBanhoTosa",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
