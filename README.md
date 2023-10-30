@@ -21,7 +21,7 @@ acesse o link abaixo: </br>
 
 Para mais detalhes sobre o Event Storming, e arquitetura utilizada, acesse o link abaixo: </br>
 
-[Event Storming] https://miro.com/app/board/uXjVMmT3gv0=/
+[Event Storming] https://miro.com/app/board/uXjVMmT3gv0=/?share_link_id=783675047195
 
 ## Como executar o projeto
 
