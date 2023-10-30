@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 public record AgendamentoRequestDTO(
         LocalDateTime dataAgendamento,
-        String observacao,
         Integer status,
         DonoRequestDTO dono,
         PetShopRequestDTO petShop,
