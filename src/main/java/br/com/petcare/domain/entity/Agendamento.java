@@ -25,8 +25,6 @@ public class Agendamento {
 
     private LocalDateTime dataAgendamento;
 
-    private String observacao;
-
     @Convert(converter = StatusEnumConverter.class)
     private StatusEnum status;
 

@@ -26,4 +26,6 @@ Para mais detalhes sobre o Event Storming, e arquitetura utilizada, acesse o lin
 ## Como executar o projeto
 
 Para executar o projeto, é necessário ter instalado o Java 17 e o Gradle 7+ </br>
-Após clonar o projeto, se estiver utilizando o IntelliJ, basta abrir o projeto e executar a classe PetCareApplication.java </br> 
+Após clonar o projeto, se estiver utilizando o IntelliJ, basta abrir o projeto e executar a classe PetCareApplication.java </br>
+
+No resources do projeto há um arquivo com a collection do Postman, para testar os endpoints. </br>
