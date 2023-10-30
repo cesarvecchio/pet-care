@@ -23,7 +23,7 @@ public abstract class Servico {
     @Convert(converter = TipoServicoEnumConverter.class)
     private TipoServicoEnum tipoServico;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Agendamento agendamento;
 
 }

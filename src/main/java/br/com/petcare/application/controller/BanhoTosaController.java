@@ -1,5 +1,6 @@
 package br.com.petcare.application.controller;
 
+import br.com.petcare.application.request.AgendamentoRequestDTO;
 import br.com.petcare.application.request.BanhoTosaRequestDTO;
 import br.com.petcare.application.response.BanhoTosaResponseDTO;
 import br.com.petcare.domain.service.BanhoTosaService;
@@ -33,6 +34,12 @@ public class BanhoTosaController {
                                                           @PathVariable Integer idPet,
                                                           @RequestBody BanhoTosaRequestDTO banhoTosaRequestDTO) {
         return ResponseEntity.ok(banhoTosaService.cadastrar(idPetShop, idPet, banhoTosaRequestDTO));
+    }
+
+    @PostMapping("{idBanhoTosa}")
+    public ResponseEntity<BanhoTosaResponseDTO> reagendar(@PathVariable Integer idBanhoTosa,
+                                                          @RequestBody AgendamentoRequestDTO agendamentoRequestDTO) {
+        return ResponseEntity.ok(banhoTosaService.reagendar(idBanhoTosa, agendamentoRequestDTO));
     }
 
 }

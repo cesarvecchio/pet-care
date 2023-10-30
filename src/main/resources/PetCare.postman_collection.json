@@ -322,35 +322,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Reagendar",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \r\n    \"dataAgendamento\": \"2025-01-01T13:13:00\"\r\n\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/pet-care/agendamento/1",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"pet-care",
-								"agendamento",
-								"1"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -435,6 +406,35 @@
 									"value": "2",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reagendar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \r\n    \"dataAgendamento\": \"2025-01-01T13:13:00\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/agendamento/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"agendamento",
+								"1"
 							]
 						}
 					},

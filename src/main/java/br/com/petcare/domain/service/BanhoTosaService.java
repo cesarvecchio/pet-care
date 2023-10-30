@@ -1,13 +1,15 @@
 package br.com.petcare.domain.service;
 
+import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
+import br.com.petcare.application.request.AgendamentoRequestDTO;
 import br.com.petcare.application.request.BanhoTosaRequestDTO;
 import br.com.petcare.application.response.BanhoTosaResponseDTO;
 import br.com.petcare.domain.entity.Agendamento;
 import br.com.petcare.domain.entity.BanhoTosa;
+import br.com.petcare.domain.enums.StatusEnum;
 import br.com.petcare.domain.enums.TipoBanhoTosaEnum;
 import br.com.petcare.domain.enums.TipoServicoEnum;
 import br.com.petcare.infra.repository.BanhoTosaRepository;
-import br.com.petcare.utils.Utils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,15 +23,13 @@ public class BanhoTosaService {
     private final BanhoTosaRepository banhoTosaRepository;
     private final AgendamentoService agendamentoService;
     private final FuncionarioService funcionarioService;
-    private final Utils utils;
 
     public BanhoTosaService(BanhoTosaRepository banhoTosaRepository,
                             AgendamentoService agendamentoService,
-                            FuncionarioService funcionarioService, Utils utils) {
+                            FuncionarioService funcionarioService) {
         this.banhoTosaRepository = banhoTosaRepository;
         this.agendamentoService = agendamentoService;
         this.funcionarioService = funcionarioService;
-        this.utils = utils;
     }
 
     public Page<BanhoTosaResponseDTO> buscarTodos(Pageable pageable, Integer idDono, Integer idPet, Integer idPetShop, Integer tipoBanhoTosa) {
@@ -50,6 +50,35 @@ public class BanhoTosaService {
         banhoTosa.setAgendamento(agendamento);
 
         return toResponseDTO(banhoTosaRepository.save(banhoTosa));
+    }
+
+    public BanhoTosaResponseDTO reagendar(Integer idBanhoTosa, AgendamentoRequestDTO agendamentoRequestDTO) {
+        BanhoTosa banhoTosa = buscaPorId(idBanhoTosa);
+
+        Agendamento novoAgendamento = Agendamento.builder()
+                .dataAgendamento(agendamentoRequestDTO.dataAgendamento())
+                .status(StatusEnum.REAGENDADO)
+                .dono(banhoTosa.getAgendamento().getDono())
+                .petShop(banhoTosa.getAgendamento().getPetShop())
+                .pet(banhoTosa.getAgendamento().getPet())
+                .build();
+        BanhoTosa reagendado = BanhoTosa.builder()
+                .servicosAdicionais(banhoTosa.getServicosAdicionais())
+                .cuidadosEspeciais(banhoTosa.getCuidadosEspeciais())
+                .tipoBanhoTosa(banhoTosa.getTipoBanhoTosa())
+                .tipoServico(banhoTosa.getTipoServico())
+                .funcionarioResponsavel(banhoTosa.getFuncionarioResponsavel())
+                .agendamento(novoAgendamento)
+                .build();
+
+        return toResponseDTO(banhoTosaRepository.save(reagendado));
+
+    }
+
+    public BanhoTosa buscaPorId(Integer idBanhoTosa) {
+        return banhoTosaRepository.findById(idBanhoTosa)
+                .orElseThrow(() -> new NaoEncontradoException(
+                        String.format("Serviço de banho e tosa com o id '%d' não encontrado", idBanhoTosa)));
     }
 
     public BanhoTosa toEntity(BanhoTosaRequestDTO banhoTosaRequestDTO) {
