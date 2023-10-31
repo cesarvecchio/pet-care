@@ -5,6 +5,7 @@ import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
 import br.com.petcare.application.request.DonoRequestDTO;
 import br.com.petcare.application.response.DonoResponseDTO;
 import br.com.petcare.domain.entity.Dono;
+import br.com.petcare.domain.valueObject.Endereco;
 import br.com.petcare.infra.repository.DonoRepository;
 import br.com.petcare.utils.Utils;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,15 @@ public class DonoService {
 
     public DonoResponseDTO atualizar(Integer id, DonoRequestDTO donoRequestDTO) {
         Dono dono = buscaPorId(id);
+        Endereco endereco = dono.getEndereco();
 
-        utils.copyNonNullProperties(donoRequestDTO, dono);
+        Dono donoRequest = toEntity(donoRequestDTO);
+        Endereco enderecoRequest = donoRequest.getEndereco();
+
+        utils.copyNonNullProperties(donoRequest, dono);
+        utils.copyNonNullProperties(enderecoRequest, endereco);
+
+        dono.setEndereco(endereco);
 
         return toResponseDto(donoRepository.save(dono));
     }

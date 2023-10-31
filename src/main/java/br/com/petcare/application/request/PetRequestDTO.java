@@ -1,7 +1,5 @@
 package br.com.petcare.application.request;
 
-import br.com.petcare.application.response.DonoResponseDTO;
-
 import java.time.LocalDate;
 
 public record PetRequestDTO(

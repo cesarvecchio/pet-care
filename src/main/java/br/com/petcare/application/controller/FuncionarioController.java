@@ -3,6 +3,9 @@ package br.com.petcare.application.controller;
 import br.com.petcare.application.request.FuncionarioRequestDTO;
 import br.com.petcare.application.response.FuncionarioResponseDTO;
 import br.com.petcare.domain.service.FuncionarioService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +19,9 @@ public class FuncionarioController {
         this.funcionarioService = funcionarioService;
     }
 
-    @PostMapping
-    public ResponseEntity<FuncionarioResponseDTO> cadastrar(@RequestBody FuncionarioRequestDTO funcionarioDTO) {
-        return ResponseEntity.ok(funcionarioService.cadastrar(funcionarioDTO));
+    @PostMapping("/{idPetShop}")
+    public ResponseEntity<FuncionarioResponseDTO> cadastrar(@PathVariable Integer idPetShop, @RequestBody FuncionarioRequestDTO funcionarioDTO) {
+        return ResponseEntity.ok(funcionarioService.cadastrar(idPetShop, funcionarioDTO));
     }
 
     @GetMapping("/{id}")
@@ -26,9 +29,15 @@ public class FuncionarioController {
         return ResponseEntity.ok(funcionarioService.toResponseDTO(funcionarioService.buscaPorId(id)));
     }
 
+    @GetMapping("/pet-shop/{idPetShop}")
+    public ResponseEntity<Page<FuncionarioResponseDTO>> consultarFuncionariosPorPetShop(@PathVariable Integer idPetShop,
+                                                                                        @PageableDefault(size = 10, page = 0, sort = "nome") Pageable pageable) {
+        return ResponseEntity.ok(funcionarioService.consultarFuncionariosPorPetShop(idPetShop, pageable));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioResponseDTO> atualizar(@PathVariable Integer id, @RequestBody FuncionarioResponseDTO funcionarioResponseDTO) {
-        return ResponseEntity.ok(funcionarioService.atualizar(id, funcionarioResponseDTO));
+    public ResponseEntity<FuncionarioResponseDTO> atualizar(@PathVariable Integer id, @RequestBody FuncionarioRequestDTO funcionarioRequestDTO) {
+        return ResponseEntity.ok(funcionarioService.atualizar(id, funcionarioRequestDTO));
     }
 
     @DeleteMapping("/{id}")

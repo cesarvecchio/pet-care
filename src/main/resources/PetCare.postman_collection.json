@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\" : \"Alberto Santana\",\r\n    \"cpf\" : \"20391203921\",\r\n    \"rg\" : \"1920492019\",\r\n    \"email\" : \"alberto@gmail.com\",\r\n    \"senha\" : \"12345\"\r\n}",
+							"raw": "{\r\n    \"nome\" : \"Alberto Santana\",\r\n    \"cpf\" : \"20391203921\",\r\n    \"rg\" : \"1920492019\",\r\n    \"email\" : \"alberto@gmail.com\",\r\n    \"senha\" : \"12345\",\r\n    \"endereco\" : {\r\n        \"cep\": \"880594312\",\r\n        \"logradouro\": \"Jose Maria\",\r\n        \"complemento\": \"Perto da esquina\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -43,7 +43,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/pet-care/dono/1",
+							"raw": "localhost:8080/pet-care/dono/3",
 							"host": [
 								"localhost"
 							],
@@ -51,7 +51,7 @@
 							"path": [
 								"pet-care",
 								"dono",
-								"1"
+								"3"
 							]
 						}
 					},
@@ -64,7 +64,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\" : \"César Alves Vecchio\",\r\n    \"cpf\" : \"20391203921\",\r\n    \"email\" : \"cesar@gmail.com\",\r\n    \"senha\" : \"12345\"\r\n}",
+							"raw": "{\r\n    \"nome\" : \"César Alves Vecchio\",\r\n    \"cpf\" : \"20391203921\",\r\n    \"email\" : \"cesar@gmail.com\",\r\n    \"senha\" : \"12345\", \r\n    \"endereco\" : {\r\n        \"cep\": \"880594312\",\r\n        \"logradouro\": \"teste\",\r\n        \"complemento\": \"aleluia\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -109,6 +109,130 @@
 			]
 		},
 		{
+			"name": "Funcionário",
+			"item": [
+				{
+					"name": "Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\" : \"Alberto Santana\",\r\n    \"cpf\" : \"03412341244\",\r\n    \"rg\" : \"1920492019\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/funcionario/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"funcionario",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/funcionario/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"funcionario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\" : \"Teste\",\r\n    \"cpf\" : \"534123908444\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/funcionario/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"funcionario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/funcionario/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"funcionario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar Funcionário por PetShop",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/funcionario/pet-shop/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"funcionario",
+								"pet-shop",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Pet",
 			"item": [
 				{
@@ -118,7 +242,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Luna\",\r\n    \"dataNascimento\": \"2011-01-01\",\r\n    \"peso\": 4.2,\r\n    \"tamanho\": 35.0,\r\n    \"especie\": \"Gato\",\r\n    \"raca\": \"Siamês\",\r\n    \"humor\": \"Dócil\",\r\n    \"genero\": \"Fêmea\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"Luna\",\r\n    \"dataNascimento\": \"2011-01-01\",\r\n    \"peso\": 4.2,\r\n    \"tamanho\": 35.0,\r\n    \"especie\": 1,\r\n    \"raca\": 3,\r\n    \"humor\": 1,\r\n    \"genero\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -166,7 +290,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"tamanho\": 30.0\r\n}",
+							"raw": "{\r\n    \"tamanho\": 30.0,\r\n    \"peso\": 15.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -174,7 +298,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/pet-care/pet/1/2",
+							"raw": "localhost:8080/pet-care/pet/1/1",
 							"host": [
 								"localhost"
 							],
@@ -183,7 +307,7 @@
 								"pet-care",
 								"pet",
 								"1",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -262,7 +386,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Pet\",\r\n    \"cpf\": null,\r\n    \"cnpj\": null,\r\n    \"listaFuncionarios\": [\"Alberto\", \"Alfredo\"],\r\n    \"tipoServico\": \"Banho e tosa\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"Pet\",\r\n    \"cpf\": null,\r\n    \"cnpj\": null,\r\n    \"tipoServico\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -335,7 +459,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"servicosAdicionais\": \"Não cortar muito curto\",\r\n    \"cuidadosEspeciais\": \"\",\r\n    \"tipoBanhoTosa\": 2,\r\n    \"agendamento\" : {\r\n        \"dataAgendamento\": \"2021-01-01T13:13:00\",\r\n        \"status\": 1\r\n    }\r\n\r\n    \r\n}",
+							"raw": "{\r\n    \"servicosAdicionais\": \"Usar shampoo antialergico\",\r\n    \"cuidadosEspeciais\": \"\",\r\n    \"tipoBanhoTosa\": 1,\r\n    \"agendamento\" : {\r\n        \"dataAgendamento\": \"2023-01-01T13:13:00\",\r\n        \"status\": 1\r\n    }\r\n\r\n    \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -343,7 +467,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/pet-care/banho-tosa/2/1",
+							"raw": "localhost:8080/pet-care/banho-tosa/2/2",
 							"host": [
 								"localhost"
 							],
@@ -352,7 +476,7 @@
 								"pet-care",
 								"banho-tosa",
 								"2",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -376,7 +500,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/pet-care/banho-tosa",
+							"raw": "localhost:8080/pet-care/banho-tosa?idDono=1&idPet=2&idPetShop=2&tipoBanhoTosa=2",
 							"host": [
 								"localhost"
 							],
@@ -388,23 +512,19 @@
 							"query": [
 								{
 									"key": "idDono",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "idPet",
-									"value": "1",
-									"disabled": true
+									"value": "2"
 								},
 								{
 									"key": "idPetShop",
-									"value": "2",
-									"disabled": true
+									"value": "2"
 								},
 								{
 									"key": "tipoBanhoTosa",
-									"value": "2",
-									"disabled": true
+									"value": "2"
 								}
 							]
 						}
@@ -426,14 +546,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/pet-care/agendamento/1",
+							"raw": "localhost:8080/pet-care/banho-tosa/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"pet-care",
-								"agendamento",
+								"banho-tosa",
 								"1"
 							]
 						}
