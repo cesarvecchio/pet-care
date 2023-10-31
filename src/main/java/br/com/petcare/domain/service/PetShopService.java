@@ -51,9 +51,15 @@ public class PetShopService {
 
     public PetShopResponseDTO atualizar(Integer idPetShop, PetShopRequestDTO petShopRequestDTO) {
         PetShop petShop = buscarPorId(idPetShop);
+        Endereco endereco = petShop.getEndereco();
+
         PetShop request = toEntity(petShopRequestDTO);
+        Endereco enderecoRequest = request.getEndereco();
 
         utils.copyNonNullProperties(request, petShop);
+        utils.copyNonNullProperties(enderecoRequest, endereco);
+
+        petShop.setEndereco(endereco);
 
         return toResponseDTO(petShopRepository.save(petShop));
     }

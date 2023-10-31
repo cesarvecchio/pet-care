@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "af250eb6-4b72-447b-a9b1-401887f3ef92",
+		"_postman_id": "76599376-f6f6-46ff-ae5c-1e528658a4fc",
 		"name": "PetCare",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "15721724"
+		"_exporter_id": "12369015"
 	},
 	"item": [
 		{
@@ -374,6 +374,28 @@
 							"path": [
 								"pet-care",
 								"pet-shop"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "cpf",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "cnpj",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "tipoServico",
+									"value": "1",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -386,7 +408,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"Pet\",\r\n    \"cpf\": null,\r\n    \"cnpj\": null,\r\n    \"tipoServico\": 2\r\n}",
+							"raw": "{\r\n    \"nome\": \"Pet\",\r\n    \"cnpj\": \"10864846034563\",\r\n    \"tipoServico\": 3,\r\n    \"endereco\": {\r\n        \"cep\": \"02525050\",\r\n        \"logradouro\": \"Avenida Braz Leme\",\r\n        \"complemento\": \"Lojas 16 e 17\",\r\n        \"bairro\": \"Santana\",\r\n        \"cidade\": \"São Paulo\",\r\n        \"uf\": \"SP\",\r\n        \"numero\": \"1200\",\r\n        \"latitude\": -23.507549,\r\n        \"longitude\": -46.648546\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -402,6 +424,75 @@
 							"path": [
 								"pet-care",
 								"pet-shop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"endereco\": {\r\n        \"cep\": \"02521111\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/pet-care/pet-shop/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet-shop",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/pet-shop/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet-shop",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/pet-care/pet-shop/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pet-care",
+								"pet-shop",
+								"2"
 							]
 						}
 					},
@@ -467,7 +558,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/pet-care/banho-tosa/2/2",
+							"raw": "localhost:8080/pet-care/banho-tosa/2/1",
 							"host": [
 								"localhost"
 							],
@@ -476,7 +567,7 @@
 								"pet-care",
 								"banho-tosa",
 								"2",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -500,7 +591,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/pet-care/banho-tosa?idDono=1&idPet=2&idPetShop=2&tipoBanhoTosa=2",
+							"raw": "localhost:8080/pet-care/banho-tosa?idDono=1&idPet=1&idPetShop=2&tipoBanhoTosa=2",
 							"host": [
 								"localhost"
 							],
@@ -516,7 +607,7 @@
 								},
 								{
 									"key": "idPet",
-									"value": "2"
+									"value": "1"
 								},
 								{
 									"key": "idPetShop",
