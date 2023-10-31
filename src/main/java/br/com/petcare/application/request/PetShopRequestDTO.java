@@ -10,7 +10,6 @@ public record PetShopRequestDTO(
         String email,
         String senha,
         String cnpj,
-        List<FuncionarioRequestDTO> funcionarios,
         Integer tipoServico,
         Endereco endereco
 ) {

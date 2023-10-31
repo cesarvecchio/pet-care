@@ -1,11 +1,8 @@
 package br.com.petcare.domain.service;
 
 import br.com.petcare.application.controller.exceptions.NaoEncontradoException;
-import br.com.petcare.application.request.FuncionarioRequestDTO;
 import br.com.petcare.application.request.PetShopRequestDTO;
-import br.com.petcare.application.response.FuncionarioResponseDTO;
 import br.com.petcare.application.response.PetShopResponseDTO;
-import br.com.petcare.domain.entity.Funcionario;
 import br.com.petcare.domain.entity.PetShop;
 import br.com.petcare.domain.enums.TipoServicoEnum;
 import br.com.petcare.domain.valueObject.Endereco;
@@ -16,19 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Service
 public class PetShopService {
     private final PetShopRepository petShopRepository;
-    private final FuncionarioService funcionarioService;
     private final Utils utils;
 
-    public PetShopService(PetShopRepository petShopRepository, FuncionarioService funcionarioService, Utils utils) {
+    public PetShopService(PetShopRepository petShopRepository, Utils utils) {
         this.petShopRepository = petShopRepository;
-        this.funcionarioService = funcionarioService;
         this.utils = utils;
     }
 
@@ -58,9 +51,15 @@ public class PetShopService {
 
     public PetShopResponseDTO atualizar(Integer idPetShop, PetShopRequestDTO petShopRequestDTO) {
         PetShop petShop = buscarPorId(idPetShop);
+        Endereco endereco = petShop.getEndereco();
+
         PetShop request = toEntity(petShopRequestDTO);
+        Endereco enderecoRequest = request.getEndereco();
 
         utils.copyNonNullProperties(request, petShop);
+        utils.copyNonNullProperties(enderecoRequest, endereco);
+
+        petShop.setEndereco(endereco);
 
         return toResponseDTO(petShopRepository.save(petShop));
     }
@@ -88,7 +87,6 @@ public class PetShopService {
                 petShop.getId(),
                 petShop.getNome(),
                 petShop.getCnpj(),
-                isEmpty(petShop.getFuncionarios()) ? null : getListOfResponseDTOFuncionarios(petShop.getFuncionarios()),
                 isEmpty(petShop.getTipoServico()) ? null : petShop.getTipoServico().getDescricao(),
                 petShop.getEndereco()
         );
@@ -101,17 +99,9 @@ public class PetShopService {
                 .email(dto.email())
                 .senha(dto.senha())
                 .cnpj(dto.cnpj())
-                .funcionarios(getListOfFuncionarios(dto.funcionarios()))
                 .tipoServico(isEmpty(dto.tipoServico()) ? null : TipoServicoEnum.recuperarServico(dto.tipoServico()))
                 .endereco(dto.endereco())
                 .build();
     }
 
-    private List<FuncionarioResponseDTO> getListOfResponseDTOFuncionarios(List<Funcionario> funcionarios) {
-        return funcionarios.stream().map(funcionarioService::toResponseDTO).toList();
-    }
-
-    private List<Funcionario> getListOfFuncionarios(List<FuncionarioRequestDTO> funcionariosDTO) {
-        return funcionariosDTO.stream().map(this.funcionarioService::toEntity).toList();
-    }
 }

@@ -7,31 +7,37 @@ import br.com.petcare.application.response.FuncionarioResponseDTO;
 import br.com.petcare.domain.entity.Funcionario;
 import br.com.petcare.infra.repository.FuncionarioRepository;
 import br.com.petcare.utils.Utils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
+    private final PetShopService petShopService;
     private final Utils utils;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, Utils utils) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, PetShopService petShopService, Utils utils) {
         this.funcionarioRepository = funcionarioRepository;
+        this.petShopService = petShopService;
         this.utils = utils;
     }
 
-    public FuncionarioResponseDTO cadastrar(FuncionarioRequestDTO funcionarioDTO) {
+    public FuncionarioResponseDTO cadastrar(Integer idPetShop, FuncionarioRequestDTO funcionarioDTO) {
         Funcionario funcionario = toEntity(funcionarioDTO);
 
-        if (cpfExistente(funcionarioDTO.cpf()))
+        if (cpfExistente(funcionarioDTO.cpf())) {
             throw new CpfException("Esse cpf já está sendo utilizado");
+        }
+        funcionario.setPetShop(petShopService.buscarPorId(idPetShop));
 
         return toResponseDTO(funcionarioRepository.save(funcionario));
     }
 
-    public FuncionarioResponseDTO atualizar(Integer id, FuncionarioResponseDTO funcionarioResponseDTO) {
+    public FuncionarioResponseDTO atualizar(Integer id, FuncionarioRequestDTO funcionarioRequestDTO) {
         Funcionario funcionario = buscaPorId(id);
 
-        utils.copyNonNullProperties(funcionarioResponseDTO, funcionario);
+        utils.copyNonNullProperties(funcionarioRequestDTO, funcionario);
 
         return toResponseDTO(funcionarioRepository.save(funcionario));
     }
@@ -46,6 +52,13 @@ public class FuncionarioService {
         return funcionarioRepository.findById(idFuncionario)
                 .orElseThrow(() -> new NaoEncontradoException(
                         String.format("Funcionário com o id '%d' não encontrado", idFuncionario)));
+    }
+
+    public Page<FuncionarioResponseDTO> consultarFuncionariosPorPetShop(Integer idPetShop, Pageable pageable) {
+        petShopService.existePorId(idPetShop);
+        Page<Funcionario> funcionarios = funcionarioRepository.findAllByPetShopId(idPetShop, pageable);
+
+        return funcionarios.map(this::toResponseDTO);
     }
 
     private boolean cpfExistente(String cpf) {
@@ -70,11 +83,9 @@ public class FuncionarioService {
 
     public Funcionario toEntity(FuncionarioRequestDTO funcionarioDTO) {
         return Funcionario.builder()
-                .id(funcionarioDTO.id())
                 .nome(funcionarioDTO.nome())
                 .cpf(funcionarioDTO.cpf())
                 .rg(funcionarioDTO.rg())
                 .build();
     }
-
 }
